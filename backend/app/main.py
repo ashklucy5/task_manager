@@ -4,7 +4,6 @@ FastAPI Application Entry Point
 """
 import os
 import sys
-import logging
 from datetime import datetime, timezone
 from typing import Dict
 
@@ -13,13 +12,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import OperationalError
-from sqlalchemy import text  # ✅ REQUIRED for SQLAlchemy 2.0
+from sqlalchemy import text
 
 # Import core modules
 from app.database import get_db, engine, Base
 from app.core.config import settings
 from app.models.user import User as UserModel
-from sqlalchemy import text
 
 # Import routers AFTER models to avoid circular imports
 from app.api.endpoints import (
@@ -30,26 +28,13 @@ from app.api.endpoints import (
     analytics_router
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.StreamHandler(sys.stdout)
-    ]
-)
-logger = logging.getLogger(__name__)
-
 
 # ==================== DATABASE INITIALIZATION ====================
 
 def init_database():
     """Initialize database: create DB if missing + run migrations"""
     if not settings.DEBUG:
-        logger.info("Production mode: Skipping auto-database creation")
         return
-    
-    logger.info("🔧 Development mode: Initializing database...")
     
     # ✅ FIXED: Correct import name (was 'database_initt' typo)
     try:
@@ -62,26 +47,19 @@ def init_database():
         # Create tables directly (fallback for first run)
         try:
             Base.metadata.create_all(bind=engine)
-            logger.info("✅ Created database tables (direct)")
         except Exception as e:
-            logger.warning(f"⚠️ Direct table creation warning (expected if using Alembic): {e}")
+            pass
         
         # Run migrations (non-blocking - app should start even if migrations fail)
         try:
             run_migrations()
         except Exception as e:
-            logger.warning(f"⚠️ Migrations skipped: {e}")
-            logger.warning("💡 App will start using direct table creation")
-        
-        logger.info("✅ Database initialization complete")
+            pass
         
     except ImportError as e:
-        logger.warning(f"⚠️ Database initialization scripts not found: {e}")
-        logger.warning("💡 Hint: Create database_init.py and alembic_utils.py for auto-init")
+        pass
     except Exception as e:
-        logger.error(f"❌ Database initialization failed: {e}")
-        # ✅ DO NOT EXIT - let app start if DB already exists
-        logger.info("⚠️ Continuing startup (database may already exist)")
+        pass
 
 
 # ==================== FASTAPI APP SETUP ====================
@@ -110,7 +88,6 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_event():
     """Run on application startup"""
-    logger.info(f"🚀 Starting {settings.APP_NAME} (DEBUG={settings.DEBUG})")
     
     # Initialize database on startup (dev only)
     if settings.DEBUG:
@@ -119,27 +96,24 @@ async def startup_event():
     # ✅ FIXED: Use text() wrapper for raw SQL (SQLAlchemy 2.0 requirement)
     try:
         db = next(get_db())
-        db.execute(text("SELECT 1"))  # ✅ WRAPPED IN text()
-        logger.info("✅ Database connection verified")
+        db.execute(text("SELECT 1"))
         db.close()
     except Exception as e:
-        logger.error(f"❌ Database connection failed: {e}")
         if settings.DEBUG:
-            logger.error("💡 Check: Is PostgreSQL running? Is DATABASE_URL correct in .env?")
+            pass
     
-    logger.info(f"✅ {settings.APP_NAME} ready at http://localhost:8000")
+    # Removed log message
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    logger.info(f"🛑 Shutting down {settings.APP_NAME}")
+    pass
 
 
 # ==================== EXCEPTION HANDLERS ====================
 
 @app.exception_handler(OperationalError)
 async def operational_error_handler(request: Request, exc: OperationalError):
-    logger.error(f"Database error: {exc}")
     return JSONResponse(
         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
         content={
@@ -169,7 +143,6 @@ async def health_check(db: Session = Depends(get_db)):
     }
     
     try:
-        # ✅ FIXED: Use text() wrapper
         db.execute(text("SELECT 1"))
         checks["database"] = "healthy"
     except Exception as e:
@@ -190,3 +163,14 @@ async def root():
         "environment": "development" if settings.DEBUG else "production",
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
+
+# Add this temporarily for debugging
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    import traceback
+    print("🔥 FULL TRACEBACK:")
+    print(traceback.format_exc())
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error", "debug": str(exc)}
+    )

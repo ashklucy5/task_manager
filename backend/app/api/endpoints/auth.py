@@ -7,9 +7,13 @@ from app.core.security import create_access_token
 from app.core.config import settings
 from app.models.user import User, UserRole  # ✅ FIXED: Added User import
 from datetime import timedelta
+import logging
+
 
 router = APIRouter(tags=["Authentication"])
 
+logger = logging.getLogger("uvicorn")
+logger.setLevel(logging.DEBUG)
 
 @router.post("/login", response_model=Token)
 async def login(form_data: UserLogin, db: Session = Depends(get_db)):
@@ -41,6 +45,7 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
     Register a new user.
     Only Owner can create other users with financial data.
     """
+    logger.info(f"Attempting to register user: {user.username} with email: {user.email}")
     # Check if user already exists
     existing_user = db.query(User).filter(  # ✅ FIXED: User is now imported
         (User.email == user.email) | (User.username == user.username)

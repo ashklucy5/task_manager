@@ -5,15 +5,15 @@ from enum import Enum
 
 
 class UserRole(str, Enum):
-    OWNER = "owner"
-    ADMIN = "admin"
-    EMPLOYEE = "employee"
+    OWNER = "OWNER"      # ✅ UPPERCASE CONSISTENT
+    ADMIN = "ADMIN"      # ✅ UPPERCASE CONSISTENT
+    EMPLOYEE = "EMPLOYEE"  # ✅ UPPERCASE CONSISTENT
 
 
 class UserStatus(str, Enum):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    ON_LEAVE = "on_leave"
+    ACTIVE = "ACTIVE"      # ✅ UPPERCASE CONSISTENT
+    INACTIVE = "INACTIVE"  # ✅ UPPERCASE CONSISTENT
+    ON_LEAVE = "ON_LEAVE"  # ✅ UPPERCASE CONSISTENT
 
 
 # ==================== REQUEST SCHEMAS ====================
@@ -23,22 +23,22 @@ class UserCreate(BaseModel):
     email: EmailStr
     username: str = Field(..., min_length=3, max_length=100)
     full_name: str = Field(..., min_length=1, max_length=255)
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=8, max_length=72)
     role: UserRole = UserRole.EMPLOYEE
-    salary: Optional[int] = None  # Owner-only field (stored but hidden from non-owners)
-    payment_rate: Optional[int] = None  # Owner-only field
-    confidential_notes: Optional[str] = None  # Owner-only field
+    salary: Optional[int] = None
+    payment_rate: Optional[int] = None
+    confidential_notes: Optional[str] = None
 
     model_config = {
         "json_schema_extra": {
             "example": {
-                "email": "sarah.kim@acme.com",
-                "username": "sarah_kim",
-                "full_name": "Sarah Kim",
+                "email": "owner@nexusflow.com",
+                "username": "owner",
+                "full_name": "Business Owner",
                 "password": "SecurePass123!",
-                "role": "employee",
-                "salary": 520000,  # $5,200/month in cents
-                "payment_rate": 22000  # $220/task
+                "role": "OWNER",  # ✅ UPPERCASE
+                "salary": 1200000,
+                "payment_rate": 50000
             }
         }
     }
@@ -49,17 +49,18 @@ class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
     username: Optional[str] = Field(None, min_length=3, max_length=100)
     full_name: Optional[str] = Field(None, min_length=1, max_length=255)
+    password: Optional[str] = Field(None, min_length=8, max_length=72)
     role: Optional[UserRole] = None
     status: Optional[UserStatus] = None
-    salary: Optional[int] = None  # Owner-only
-    payment_rate: Optional[int] = None  # Owner-only
-    confidential_notes: Optional[str] = None  # Owner-only
+    salary: Optional[int] = None
+    payment_rate: Optional[int] = None
+    confidential_notes: Optional[str] = None
 
     model_config = {
         "json_schema_extra": {
             "example": {
                 "full_name": "Sarah Kim",
-                "status": "active",
+                "status": "ACTIVE",  # ✅ UPPERCASE
                 "salary": 550000
             }
         }
@@ -69,13 +70,13 @@ class UserUpdate(BaseModel):
 class UserLogin(BaseModel):
     """Schema for user login"""
     username: str
-    password: str
+    password: str = Field(..., max_length=72)
 
     model_config = {
         "json_schema_extra": {
             "example": {
-                "username": "alex_chen",
-                "password": "MySecret123!"
+                "username": "owner",
+                "password": "SecurePass123!"
             }
         }
     }
@@ -111,15 +112,15 @@ class UserResponse(BaseModel):
         "from_attributes": True,
         "json_schema_extra": {
             "example": {
-                "id": 2,
-                "email": "sarah.kim@acme.com",
-                "username": "sarah_kim",
-                "full_name": "Sarah Kim",
-                "role": "employee",
-                "status": "active",
+                "id": 1,
+                "email": "owner@nexusflow.com",
+                "username": "owner",
+                "full_name": "Business Owner",
+                "role": "OWNER",    # ✅ UPPERCASE
+                "status": "ACTIVE", # ✅ UPPERCASE
                 "is_active": True,
-                "is_verified": True,
-                "created_at": "2026-02-27T10:30:00Z"
+                "is_verified": False,
+                "created_at": "2026-02-28T01:30:00Z"
             }
         }
     }
@@ -142,24 +143,7 @@ class UserWithFinancials(BaseModel):
     updated_at: datetime
     
     model_config = {
-        "from_attributes": True,
-        "json_schema_extra": {
-            "example": {
-                "id": 2,
-                "email": "sarah.kim@acme.com",
-                "username": "sarah_kim",
-                "full_name": "Sarah Kim",
-                "role": "employee",
-                "status": "active",
-                "salary": 520000,
-                "payment_rate": 22000,
-                "confidential_notes": "Excellent designer, prefers Figma over Sketch",
-                "is_active": True,
-                "is_verified": True,
-                "created_at": "2026-02-27T10:30:00Z",
-                "updated_at": "2026-02-27T14:15:00Z"
-            }
-        }
+        "from_attributes": True
     }
 
 
@@ -170,18 +154,8 @@ class UserProfile(BaseModel):
     full_name: str
     role: UserRole
     status: UserStatus
-    capacity: Optional[int] = None  # % of weekly capacity used (calculated in service)
+    capacity: Optional[int] = None
 
     model_config = {
-        "from_attributes": True,
-        "json_schema_extra": {
-            "example": {
-                "id": 2,
-                "username": "sarah_kim",
-                "full_name": "Sarah Kim",
-                "role": "employee",
-                "status": "active",
-                "capacity": 75
-            }
-        }
+        "from_attributes": True
     }

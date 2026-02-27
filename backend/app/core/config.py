@@ -10,10 +10,10 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     
     # Database
-    DATABASE_URL: str = "postgresql://postgres:password@localhost:5432/nexusflow"
+    DATABASE_URL: str = "postgresql://postgres:2121@localhost:5432/nexusflow"
     
     # JWT Settings
-    SECRET_KEY: str = "your-super-secret-key-change-this-in-production"
+    SECRET_KEY: str = "DW-yj9ALLM-CTzZiSBEOV_hMHYc-zBl23fBe11vnNwM"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
     

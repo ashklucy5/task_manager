@@ -11,26 +11,22 @@ def run_migrations():
     backend_dir = Path(__file__).parent.resolve()
     alembic_ini_path = backend_dir / "alembic.ini"
     
-    # Skip if config doesn't exist
+    # Skip if config doesn't exist - DO NOT CRASH
     if not alembic_ini_path.exists():
         print("⚠️ Alembic not configured (alembic.ini missing). Skipping migrations.")
-        return
+        return  # ✅ CRITICAL: Never call sys.exit() here
     
     try:
-        # Load config with explicit script_location
+        # Load config
         alembic_cfg = Config(str(alembic_ini_path))
-        script_location = str(backend_dir / "alembic")
-        
-        # Only set script_location if missing from config
-        if not alembic_cfg.get_main_option("script_location"):
-            alembic_cfg.set_main_option("script_location", script_location)
         
         # Run migrations
-        print(f"🚀 Running migrations from: {script_location}")
+        print("🚀 Running migrations...")
         command.upgrade(alembic_cfg, "head")
         print("✅ Migrations completed successfully")
         
     except Exception as e:
-        # NEVER crash the app - log and continue
+        # ✅ CRITICAL: NEVER call sys.exit() - log warning and continue
         print(f"⚠️ Migrations skipped (non-fatal): {e}")
         print("💡 Tables were created via Base.metadata.create_all()")
+        # App continues starting - tables already exist via SQLAlchemy
