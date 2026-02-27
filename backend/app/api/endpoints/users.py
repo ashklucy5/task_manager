@@ -9,7 +9,7 @@ from app.api.deps import get_current_user
 from app.models.user import User as UserModel, UserRole
 from app.core.rbac import require_owner, require_role, can_view_financials
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter(tags=["Users"])
 
 
 @router.get("/me", response_model=UserResponse)

@@ -8,7 +8,7 @@ from app.core.config import settings
 from app.models.user import User, UserRole  # ✅ FIXED: Added User import
 from datetime import timedelta
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(tags=["Authentication"])
 
 
 @router.post("/login", response_model=Token)

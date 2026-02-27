@@ -11,7 +11,7 @@ from app.models.user import User as UserModel, UserRole
 from app.core.rbac import require_owner, require_role, can_view_financials
 from datetime import datetime, timezone
 
-router = APIRouter(prefix="/tasks", tags=["Tasks"])
+router = APIRouter(tags=["Tasks"])
 
 
 @router.get("/me", response_model=list[TaskResponse])

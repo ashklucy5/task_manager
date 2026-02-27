@@ -7,7 +7,7 @@ from app.core.rbac import require_owner
 from datetime import datetime, timedelta
 from typing import List, Dict
 
-router = APIRouter(prefix="/analytics", tags=["Analytics"])
+router = APIRouter(tags=["Analytics"])
 
 
 @router.get("/team-performance")
