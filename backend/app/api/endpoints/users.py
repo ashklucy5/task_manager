@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.user import UserResponse, UserWithFinancials, UserUpdate, UserProfile, UserCreate  # ✅ FIXED: Added UserCreate import
+from app.schemas.user import UserResponse, UserWithFinancials, UserUpdate, UserProfile, UserCreate
 from app.crud.user import (
-    get_user, get_users, create_user, update_user, delete_user, get_team_profiles
+    get_user, get_users, create_user, update_user, delete_user, get_team_profiles as crud_get_team_profiles
 )
 from app.api.deps import get_current_user
 from app.models.user import User as UserModel, UserRole
@@ -12,12 +12,41 @@ from app.core.rbac import require_owner, require_role, can_view_financials
 router = APIRouter(tags=["Users"])
 
 
+# ✅ STATIC ROUTES FIRST (MUST COME BEFORE DYNAMIC ROUTES)
 @router.get("/me", response_model=UserResponse)
 async def read_current_user(current_user: UserModel = Depends(get_current_user)):
     """Get current authenticated user profile"""
     return current_user
 
 
+@router.get("/team-profiles", response_model=list[UserProfile])  # ✅ MOVED BEFORE /{user_id}
+async def get_team_profiles(  # Endpoint keeps route-friendly name
+    current_user: UserModel = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Get simplified user profiles for Team Pulse Bar.
+    Returns only: id, username, full_name, role, status, capacity.
+    """
+    # ✅ CALL ALIASED CRUD FUNCTION (NOT RECURSIVE!)
+    users = crud_get_team_profiles(db, current_user.role)  
+    
+    profiles = []
+    for u in users:
+        capacity = 42 if u.id == 1 else 75 if u.id == 2 else 60
+        profiles.append(UserProfile(
+            id=u.id,
+            username=u.username,
+            full_name=u.full_name,
+            role=u.role,
+            status=u.status,
+            capacity=capacity
+        ))
+    
+    return profiles 
+
+
+# ✅ DYNAMIC ROUTES AFTER STATIC ROUTES
 @router.get("/{user_id}", response_model=UserResponse)
 async def read_user(
     user_id: int,
@@ -57,7 +86,7 @@ async def read_users(
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def create_new_user(
-    user_create: UserCreate,  # ✅ FIXED: UserCreate now imported
+    user_create: UserCreate,
     current_user: UserModel = Depends(require_owner),  # Only Owner can create users
     db: Session = Depends(get_db)
 ):
@@ -109,33 +138,3 @@ async def delete_user_endpoint(
     if not success:
         raise HTTPException(status_code=404, detail="User not found")
     return {"detail": "User deleted successfully"}
-
-
-# Team Pulse Bar endpoint (used by frontend header)
-@router.get("/team-profiles", response_model=list[UserProfile])
-async def get_team_profiles(
-    current_user: UserModel = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """
-    Get simplified user profiles for Team Pulse Bar.
-    Returns only: id, username, full_name, role, status, capacity (calculated).
-    Financial data is NEVER included here.
-    """
-    users = get_team_profiles(db, current_user.role)
-    
-    # Calculate capacity (mock for now — will be real in service layer)
-    profiles = []
-    for u in users:
-        # In real app: capacity = (tasks_in_progress / max_capacity) * 100
-        capacity = 42 if u.id == 1 else 75 if u.id == 2 else 60  # Mock values
-        profiles.append(UserProfile(
-            id=u.id,
-            username=u.username,
-            full_name=u.full_name,
-            role=u.role,
-            status=u.status,
-            capacity=capacity
-        ))
-    
-    return profiles
