@@ -1,68 +1,467 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F5F7FB;
+  color: #333;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Custom color variables for role-based styling */
+:root {
+  --role-ceo: #4361ee;
+  --role-manager: #4cc9f0;
+  --role-developer: #7209b7;
+  --role-designer: #f72585;
+  --role-analyst: #4895ef;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Global styling */
+.nexus-container {
+  @apply min-h-screen;
+}
+
+/* Team Pulse Bar */
+.team-pulse-bar {
+  @apply bg-white border-b border-gray-100 py-3 px-4 shadow-sm;
+}
+
+.team-pulse-header {
+  @apply flex items-center justify-between mb-3;
+}
+
+.team-pulse-title {
+  @apply text-sm font-medium text-gray-700;
+}
+
+.team-pulse-count {
+  @apply text-xs text-gray-400;
+}
+
+.team-members {
+  @apply flex items-center overflow-x-auto pb-2 -mx-2;
+}
+
+.member-card {
+  @apply flex-shrink-0 mx-2 w-64;
+}
+
+.member-profile {
+  @apply bg-gray-50 rounded-xl p-3 border border-gray-100;
+}
+
+.member-avatar {
+  @apply relative;
+}
+
+.avatar-container {
+  @apply w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium;
+}
+
+.status-indicator {
+  @apply absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white;
+}
+
+.status-online {
+  @apply bg-green-500;
+}
+
+.status-busy {
+  @apply bg-yellow-500;
+}
+
+.status-offline {
+  @apply bg-gray-400;
+}
+
+.status-on-leave {
+  @apply bg-blue-500;
+}
+
+.member-details {
+  @apply flex items-center space-x-3 mt-3;
+}
+
+.member-name {
+  @apply font-medium text-gray-900 text-sm;
+}
+
+.member-role {
+  @apply text-xs text-gray-500;
+}
+
+.capacity-bar {
+  @apply mt-2.5;
+}
+
+.capacity-label {
+  @apply flex justify-between text-[10px] text-gray-500 mb-1;
+}
+
+.capacity-fill {
+  @apply h-1 bg-gray-100 rounded-full overflow-hidden;
+}
+
+.capacity-progress {
+  @apply h-full bg-blue-500 rounded-full transition-all duration-500;
+}
+
+/* Financial Tooltip */
+.financial-tooltip {
+  @apply absolute mt-2 bg-white border border-gray-200 rounded-xl p-3 w-56 z-50;
+}
+
+.financial-header {
+  @apply font-medium text-gray-900 text-sm mb-2;
+}
+
+.financial-item {
+  @apply flex justify-between text-[11px] mb-1;
+}
+
+.financial-label {
+  @apply text-gray-500;
+}
+
+.financial-value {
+  @apply font-medium;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+  @apply min-h-screen bg-gray-50 flex;
+}
+
+.dashboard-sidebar {
+  @apply w-64 bg-white border-r border-gray-100 flex flex-col;
+}
+
+.dashboard-main {
+  @apply flex-1 flex flex-col;
+}
+
+.dashboard-header {
+  @apply px-6 py-3 flex items-center justify-between border-b border-gray-100;
+}
+
+.dashboard-title {
+  @apply flex items-center space-x-3;
+}
+
+.dashboard-logo {
+  @apply w-9 h-9 bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl flex items-center justify-center;
+}
+
+.dashboard-logo-text {
+  @apply text-white font-bold text-lg;
+}
+
+.dashboard-subtitle {
+  @apply text-gray-500 mt-1;
+}
+
+/* Navigation */
+.nav-section {
+  @apply p-4 border-b border-gray-100;
+}
+
+.nav-title {
+  @apply text-xs font-medium text-gray-500 uppercase tracking-wider mb-2;
+}
+
+.nav-item {
+  @apply flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors;
+}
+
+.nav-item:hover {
+  @apply bg-gray-50;
+}
+
+.nav-item.active {
+  @apply bg-blue-50 text-blue-600 font-medium;
+}
+
+.nav-icon {
+  @apply text-lg;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+  @apply container mx-auto px-4 py-6 flex-1;
+}
+
+.dashboard-card {
+  @apply bg-white rounded-xl border border-gray-100 p-6;
+}
+
+.dashboard-title-large {
+  @apply text-2xl font-bold text-gray-900 mb-2;
+}
+
+.dashboard-title-medium {
+  @apply text-xl font-bold text-gray-900 mb-2;
+}
+
+.dashboard-subtitle {
+  @apply text-gray-500 mt-1;
+}
+
+.dashboard-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6;
+}
+
+.dashboard-stat {
+  @apply bg-blue-50 p-5 rounded-xl border border-blue-100;
+}
+
+.dashboard-stat-title {
+  @apply text-sm text-gray-500;
+}
+
+.dashboard-stat-value {
+  @apply text-3xl font-bold text-gray-900 mt-1;
+}
+
+/* Task Cards */
+.task-card {
+  @apply bg-white border border-gray-100 rounded-xl p-4 mb-4;
+}
+
+.task-header {
+  @apply flex items-center justify-between mb-3;
+}
+
+.task-title {
+  @apply font-bold text-lg text-gray-900;
+}
+
+.task-assignee {
+  @apply flex items-center space-x-2 text-sm;
+}
+
+.task-assignee-avatar {
+  @apply w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium;
+}
+
+.task-meta {
+  @apply flex items-center space-x-3 text-sm text-gray-500 mb-2;
+}
+
+.task-category {
+  @apply bg-gray-100 px-2 py-1 rounded-full text-xs;
+}
+
+.task-priority {
+  @apply bg-orange-100 px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.task-priority-high {
+  @apply bg-red-100 text-red-700;
+}
+
+.task-priority-medium {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+.task-priority-low {
+  @apply bg-green-100 text-green-700;
+}
+
+.task-progress {
+  @apply mt-3;
+}
+
+.progress-label {
+  @apply flex justify-between text-[12px] text-gray-500 mb-1;
+}
+
+.progress-bar {
+  @apply h-2 bg-gray-100 rounded-full overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full rounded-full transition-all duration-500;
+}
+
+.progress-fill-high {
+  @apply bg-red-500;
+}
+
+.progress-fill-medium {
+  @apply bg-yellow-500;
+}
+
+.progress-fill-low {
+  @apply bg-green-500;
+}
+
+/* AI Insights */
+.ai-insights {
+  @apply bg-white border border-gray-100 rounded-xl p-4 mb-4;
+}
+
+.ai-header {
+  @apply flex items-center justify-between mb-3;
+}
+
+.ai-title {
+  @apply font-bold text-lg text-gray-900;
+}
+
+.ai-content {
+  @apply p-4 bg-gray-50 rounded-lg;
+}
+
+.ai-suggestion {
+  @apply bg-blue-50 border border-blue-100 rounded-lg p-3 mb-3;
+}
+
+.ai-suggestion-title {
+  @apply font-medium text-gray-900 mb-1;
+}
+
+.ai-suggestion-content {
+  @apply text-gray-600;
+}
+
+/* Button Styles */
+.btn {
+  @apply px-4 py-2.5 rounded-lg font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+.btn-ghost {
+  @apply bg-transparent text-gray-600 hover:bg-gray-100;
+}
+
+.btn-danger {
+  @apply bg-red-600 hover:bg-red-700 text-white;
+}
+
+.btn-loading {
+  @apply opacity-75 cursor-not-allowed;
+}
+
+/* Role-based styling */
+.role-ceo {
+  @apply text-[var(--role-ceo)];
+}
+
+.role-manager {
+  @apply text-[var(--role-manager)];
+}
+
+.role-developer {
+  @apply text-[var(--role-developer)];
+}
+
+.role-designer {
+  @apply text-[var(--role-designer)];
+}
+
+.role-analyst {
+  @apply text-[var(--role-analyst)];
+}
+
+/* Status indicators */
+.status-indicator-dot {
+  @apply w-2 h-2 rounded-full inline-block mr-1;
+}
+
+.status-indicator-dot-online {
+  @apply bg-green-500;
+}
+
+.status-indicator-dot-busy {
+  @apply bg-yellow-500;
+}
+
+.status-indicator-dot-offline {
+  @apply bg-gray-400;
+}
+
+.status-indicator-dot-on-leave {
+  @apply bg-blue-500;
+}
+
+/* Task Status Badges */
+.status-badge {
+  @apply px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.status-pending {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-in-progress {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.status-completed {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-on-hold {
+  @apply bg-gray-100 text-gray-800;
+}
+
+.status-overdue {
+  @apply bg-red-100 text-red-800;
+}
+
+.status-cancelled {
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* Capacity Badges */
+.capacity-badge {
+  @apply px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.capacity-badge-high {
+  @apply bg-red-100 text-red-800;
+}
+
+.capacity-badge-medium {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.capacity-badge-low {
+  @apply bg-green-100 text-green-800;
+}
+
+/* Skeleton loaders */
+.skeleton {
+  @apply bg-gray-200 rounded animate-pulse;
+}
+
+.skeleton-sm {
+  @apply h-4;
+}
+
+.skeleton-md {
+  @apply h-6;
+}
+
+.skeleton-lg {
+  @apply h-8;
 }
