@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Text, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, Text, DateTime, ForeignKey, String, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -14,6 +14,18 @@ class TaskComment(Base):
     
     # Comment Content
     content = Column(Text, nullable=False)
+    
+    # ✅ NEW: Attachment/Image (Optional)
+    attachment_url = Column(String(500), nullable=True)
+    attachment_filename = Column(String(255), nullable=True)
+    
+    # ✅ NEW: Edit Tracking
+    is_edited = Column(Boolean, default=False)
+    edited_at = Column(DateTime(timezone=True), nullable=True)
+    
+    # ✅ NEW: Threading (Reply to another comment)
+    parent_id = Column(Integer, ForeignKey("task_comments.id"), nullable=True)
+    parent = relationship("TaskComment", remote_side=[id], backref="replies")
     
     # Relationships
     task_id = Column(Integer, ForeignKey("tasks.id"), nullable=False, index=True)

@@ -6,21 +6,22 @@ from app.schemas.task import TaskWithFinancials
 from app.crud.user import get_users
 from app.crud.task import get_tasks
 from app.api.deps import get_current_user
-from app.models.user import User as UserModel, UserRole
-from app.core.rbac import require_owner
+from app.models.user import User as UserModel
 
 router = APIRouter(tags=["Financials"])
 
 
 @router.get("/summary")
 async def get_financial_summary(
-    current_user: UserModel = Depends(require_owner),
+    current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get high-level financial summary (Owner-only)"""
+    if current_user.role.lower() != "owner":
+        raise HTTPException(status_code=403, detail="Owner access required")
+    
     total_users = db.query(UserModel).count()
     active_users = db.query(UserModel).filter(UserModel.is_active == True).count()
-    
     tasks = get_tasks(db)
     total_tasks = len(tasks)
     completed_tasks = len([t for t in tasks if t.status == "completed"])
@@ -39,19 +40,25 @@ async def get_financial_summary(
 
 @router.get("/users", response_model=list[UserWithFinancials])
 async def get_all_users_with_financials(
-    current_user: UserModel = Depends(require_owner),
+    current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get all users with financial data (Owner-only)"""
+    if current_user.role.lower() != "owner":
+        raise HTTPException(status_code=403, detail="Owner access required")
+    
     users = get_users(db)
     return [UserWithFinancials.model_validate(u) for u in users]
 
 
 @router.get("/tasks", response_model=list[TaskWithFinancials])
 async def get_all_tasks_with_financials(
-    current_user: UserModel = Depends(require_owner),
+    current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get all tasks with financial data (Owner-only)"""
+    if current_user.role.lower() != "owner":
+        raise HTTPException(status_code=403, detail="Owner access required")
+    
     tasks = get_tasks(db)
     return [TaskWithFinancials.model_validate(t) for t in tasks]

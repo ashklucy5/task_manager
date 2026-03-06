@@ -10,6 +10,7 @@ from typing import Dict
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles  # ✅ NEW: For serving images
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import text
@@ -19,14 +20,13 @@ from app.database import get_db, engine, Base
 from app.core.config import settings
 from app.models.user import User as UserModel
 
-# Import routers AFTER models to avoid circular imports
-from app.api.endpoints import (
-    auth_router,
-    users_router,
-    tasks_router,
-    financials_router,
-    analytics_router
-)
+# ✅ FIXED: Import routers with proper aliasing
+# Each endpoint file exports `router = APIRouter(...)`, so we alias them here
+from app.api.endpoints.auth import router as auth_router
+from app.api.endpoints.users import router as users_router
+from app.api.endpoints.tasks import router as tasks_router
+from app.api.endpoints.financials import router as financials_router
+from app.api.endpoints.analytics import router as analytics_router
 
 
 # ==================== DATABASE INITIALIZATION ====================
@@ -36,29 +36,25 @@ def init_database():
     if not settings.DEBUG:
         return
     
-    # ✅ FIXED: Correct import name (was 'database_initt' typo)
     try:
         from database_init import create_database_if_not_exists
         from alembic_utils import run_migrations
         
-        # Create database if missing
         create_database_if_not_exists()
         
-        # Create tables directly (fallback for first run)
         try:
             Base.metadata.create_all(bind=engine)
-        except Exception as e:
+        except Exception:
             pass
         
-        # Run migrations (non-blocking - app should start even if migrations fail)
         try:
             run_migrations()
-        except Exception as e:
+        except Exception:
             pass
         
-    except ImportError as e:
+    except ImportError:
         pass
-    except Exception as e:
+    except Exception:
         pass
 
 
@@ -82,6 +78,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ✅ NEW: Mount static files for avatars and task images
+# This serves files from app/static/ at /static/ URL path
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
 
 # ==================== STARTUP/SHUTDOWN EVENTS ====================
 
@@ -93,20 +93,21 @@ async def startup_event():
     if settings.DEBUG:
         init_database()
     
-    # ✅ FIXED: Use text() wrapper for raw SQL (SQLAlchemy 2.0 requirement)
+    # Verify database connection
     try:
         db = next(get_db())
         db.execute(text("SELECT 1"))
         db.close()
-    except Exception as e:
+    except Exception:
         if settings.DEBUG:
             pass
-    
-    # Removed log message
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
+    """Run on application shutdown"""
+    # Optional: Set all users offline on shutdown
+    # (Skip in production - handle via session timeout instead)
     pass
 
 
@@ -120,6 +121,24 @@ async def operational_error_handler(request: Request, exc: OperationalError):
             "detail": "Database unavailable. Please try again later.",
             "error": str(exc)
         },
+    )
+
+
+# ✅ OPTIONAL: Global debug handler (remove for production)
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    import traceback
+    if settings.DEBUG:
+        print("🔥 FULL TRACEBACK:")
+        print(traceback.format_exc())
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal server error", "debug": str(exc)}
+        )
+    # Production: return generic error
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error"}
     )
 
 
@@ -163,14 +182,3 @@ async def root():
         "environment": "development" if settings.DEBUG else "production",
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
-
-# Add this temporarily for debugging
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    import traceback
-    print("🔥 FULL TRACEBACK:")
-    print(traceback.format_exc())
-    return JSONResponse(
-        status_code=500,
-        content={"detail": "Internal server error", "debug": str(exc)}
-    )

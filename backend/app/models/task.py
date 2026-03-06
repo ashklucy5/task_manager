@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey, Enum as SQLEnum, Numeric
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey, Enum as SQLEnum, Numeric, JSON
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -23,15 +23,7 @@ class TaskPriority(str, Enum):
     URGENT = "urgent"
 
 
-class TaskCategory(str, Enum):
-    """Task category enumeration"""
-    DEVELOPMENT = "development"
-    MARKETING = "marketing"
-    SALES = "sales"
-    HR = "hr"
-    FINANCE = "finance"
-    OPERATIONS = "operations"
-    OTHER = "other"
+# ✅ REMOVED: TaskCategory enum (now free-text string)
 
 
 class Task(Base):
@@ -45,7 +37,10 @@ class Task(Base):
     # Task Information
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    category = Column(SQLEnum(TaskCategory), nullable=False, default=TaskCategory.OTHER)
+    
+    # ✅ CHANGED: category is now free-text string (any value allowed)
+    category = Column(String(100), nullable=False, default="general")
+    
     priority = Column(SQLEnum(TaskPriority), nullable=False, default=TaskPriority.MEDIUM)
     status = Column(SQLEnum(TaskStatus), nullable=False, default=TaskStatus.PENDING)
     
@@ -55,6 +50,19 @@ class Task(Base):
     
     assigned_by_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     assigned_by = relationship("User", foreign_keys=[assigned_by_id])
+    
+    # ✅ NEW: Requirements Tracking
+    requirements = Column(Text, nullable=True)  # Detailed requirements/instructions
+    requirements_checklist = Column(JSON, nullable=True)  # [{"item": "...", "completed": true/false}]
+    requirements_completed_at = Column(DateTime(timezone=True), nullable=True)  # When all requirements were met
+    
+    # ✅ NEW: Order/Client Details (Optional)
+    client_name = Column(String(255), nullable=True)  # Person who ordered
+    company_name = Column(String(255), nullable=True)  # Company who ordered
+    
+    # ✅ NEW: Product/Task Image (Optional)
+    image_url = Column(String(500), nullable=True)
+    image_filename = Column(String(255), nullable=True)
     
     # Financial Data (Owner-only visibility)
     payment_amount = Column(Integer, nullable=True)  # Task payment in cents

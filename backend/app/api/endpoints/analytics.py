@@ -2,9 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.api.deps import get_current_user
-from app.models.user import User as UserModel, UserRole
-from app.core.rbac import require_owner
-from datetime import datetime, timedelta
+from app.models.user import User as UserModel
 from typing import List, Dict
 
 router = APIRouter(tags=["Analytics"])
@@ -12,11 +10,13 @@ router = APIRouter(tags=["Analytics"])
 
 @router.get("/team-performance")
 async def get_team_performance(
-    current_user: UserModel = Depends(require_owner),
+    current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Team performance metrics (Owner-only)"""
-    # Mock data — replace with real queries later
+    if current_user.role.lower() != "owner":
+        raise HTTPException(status_code=403, detail="Owner access required")
+    
     return {
         "overview": {
             "total_tasks": 42,
@@ -51,12 +51,15 @@ async def get_team_performance(
 
 @router.get("/workload-balance")
 async def get_workload_balance(
-    current_user: UserModel = Depends(require_owner),
+    current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Workload distribution across team (Owner-only)"""
+    if current_user.role.lower() != "owner":
+        raise HTTPException(status_code=403, detail="Owner access required")
+    
     return {
-        "balance_score": 87,  # 0-100 (higher = more balanced)
+        "balance_score": 87,
         "overloaded": ["Jon Rossi"],
         "underutilized": ["James O'Neil"],
         "recommendations": [

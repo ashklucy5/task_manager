@@ -7,17 +7,37 @@ from enum import Enum
 
 class AuditAction(str, Enum):
     """Audit action enumeration"""
+    # Authentication
     LOGIN = "login"
     LOGOUT = "logout"
+    
+    # User Management
+    USER_CREATED = "user_created"
+    USER_UPDATED = "user_updated"
+    USER_DELETED = "user_deleted"
+    USER_ROLE_CHANGED = "user_role_changed"  # ✅ NEW: Critical for free-text roles
+    USER_STATUS_UPDATED = "user_status_updated"  # ✅ NEW: Active/Offline/Busy
+    USER_AVATAR_UPLOADED = "user_avatar_uploaded"  # ✅ NEW
+    USER_AVATAR_DELETED = "user_avatar_deleted"  # ✅ NEW
+    
+    # Task Management
     TASK_CREATED = "task_created"
     TASK_UPDATED = "task_updated"
     TASK_COMPLETED = "task_completed"
     TASK_DELETED = "task_deleted"
+    TASK_REQUIREMENTS_UPDATED = "task_requirements_updated"  # ✅ NEW: Critical for scope creep
+    TASK_IMAGE_UPLOADED = "task_image_uploaded"  # ✅ NEW
+    TASK_CLIENT_DETAILS_UPDATED = "task_client_details_updated"  # ✅ NEW
+    
+    # Financials
     PAYMENT_VIEWED = "payment_viewed"
     PAYMENT_EDITED = "payment_edited"
-    USER_CREATED = "user_created"
-    USER_UPDATED = "user_updated"
-    USER_DELETED = "user_deleted"
+    PAYMENT_CREATED = "payment_created"  # ✅ NEW
+    
+    # Comments
+    COMMENT_CREATED = "comment_created"  # ✅ NEW
+    COMMENT_EDITED = "comment_edited"  # ✅ NEW
+    COMMENT_DELETED = "comment_deleted"  # ✅ NEW
 
 
 class AuditLog(Base):
@@ -32,7 +52,10 @@ class AuditLog(Base):
     action = Column(SQLEnum(AuditAction), nullable=False)
     entity_type = Column(String(50), nullable=True)  # e.g., "task", "user"
     entity_id = Column(Integer, nullable=True)
-    details = Column(Text, nullable=True)  # JSON string with additional details
+    
+    # ✅ UPDATED: Details should store JSON string for change tracking
+    # Example: {"old_role": "member", "new_role": "admin"} or {"field": "requirements", "changed_by": "user_id"}
+    details = Column(Text, nullable=True)  
     
     # User who performed the action
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)

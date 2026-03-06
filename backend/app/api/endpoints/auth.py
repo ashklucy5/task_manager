@@ -1,26 +1,23 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.user import UserLogin, Token, UserCreate
-from app.crud.user import authenticate_user, create_user
+from app.crud.user import authenticate_user, create_user, set_user_online
 from app.core.security import create_access_token
 from app.core.config import settings
-from app.models.user import User, UserRole  # ✅ FIXED: Added User import
+from app.models.user import User
 from datetime import timedelta
-import logging
-
 
 router = APIRouter(tags=["Authentication"])
 
-logger = logging.getLogger("uvicorn")
-logger.setLevel(logging.DEBUG)
 
 @router.post("/login", response_model=Token)
-async def login(form_data: UserLogin, db: Session = Depends(get_db)):
-    """
-    Login with username and password.
-    Returns JWT access token.
-    """
+async def login(
+    form_data: UserLogin,
+    db: Session = Depends(get_db),
+    request: Request = None
+):
+    """Login with username and password"""
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -29,10 +26,13 @@ async def login(form_data: UserLogin, db: Session = Depends(get_db)):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Create access token
+    # Set user status to ACTIVE
+    set_user_online(db, user.id)
+    
+    # Create access token (role is string, no .value)
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username, "role": user.role.value},
+        data={"sub": user.username, "role": user.role},
         expires_delta=access_token_expires
     )
     
@@ -40,29 +40,28 @@ async def login(form_data: UserLogin, db: Session = Depends(get_db)):
 
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
-async def register(user: UserCreate, db: Session = Depends(get_db)):
-    """
-    Register a new user.
-    Only Owner can create other users with financial data.
-    """
-    logger.info(f"Attempting to register user: {user.username} with email: {user.email}")
-    # Check if user already exists
-    existing_user = db.query(User).filter(  # ✅ FIXED: User is now imported
+async def register(
+    user: UserCreate,
+    db: Session = Depends(get_db),
+    request: Request = None
+):
+    """Register a new user"""
+    existing_user = db.query(User).filter(
         (User.email == user.email) | (User.username == user.username)
     ).first()
+    
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username or email already registered"
         )
     
-    # Create user
     db_user = create_user(db, user)
     
-    # Create access token
+    # Create access token (role is string, no .value)
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": db_user.username, "role": db_user.role.value},
+        data={"sub": db_user.username, "role": db_user.role},
         expires_delta=access_token_expires
     )
     

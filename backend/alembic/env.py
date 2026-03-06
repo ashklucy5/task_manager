@@ -4,6 +4,19 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+# ✅ ADD THESE IMPORTS
+import sys
+import os
+
+# Add your project root to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Import your SQLAlchemy Base and models
+from app.database import Base  # ✅ Critical: This has your metadata
+from app.models.user import User  # ✅ Register models
+from app.models.task import Task
+from app.models.task_comment import TaskComment
+from app.models.audit_log import AuditLog
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -18,7 +31,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
