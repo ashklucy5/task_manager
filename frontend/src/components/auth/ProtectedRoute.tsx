@@ -1,16 +1,20 @@
+// src/components/auth/ProtectedRoute.tsx
+
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
-import { canViewFinancials } from '../../utils/roles';
+import { canViewFinancials, canManageUsers } from '../../utils/roles';
 import type { ReactNode } from 'react';
 
 interface ProtectedRouteProps {
   requireFinancialAccess?: boolean;
+  requireAdminAccess?: boolean;
   redirectPath?: string;
-  children?: ReactNode; // ✅ CRITICAL: Add children prop
+  children?: ReactNode;
 }
 
 const ProtectedRoute = ({
   requireFinancialAccess = false,
+  requireAdminAccess = false,
   redirectPath = '/login',
   children,
 }: ProtectedRouteProps) => {
@@ -24,7 +28,11 @@ const ProtectedRoute = ({
     return <Navigate to="/dashboard" replace />;
   }
 
-  return <>{children}</>; // ✅ Render children directly (NO Outlet needed here)
+  if (requireAdminAccess && user && !canManageUsers(user.role)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

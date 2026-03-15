@@ -16,18 +16,29 @@ async def get_financial_summary(
     current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get high-level financial summary (Owner-only)"""
-    if current_user.role.lower() != "owner":
-        raise HTTPException(status_code=403, detail="Owner access required")
+    """Get high-level financial summary (SuperAdmin only)"""
+    if current_user.role.lower() != "super_admin":
+        raise HTTPException(status_code=403, detail="SuperAdmin access required")
     
-    total_users = db.query(UserModel).count()
-    active_users = db.query(UserModel).filter(UserModel.is_active == True).count()
+    # Filter by company
+    total_users = db.query(UserModel).filter(
+        UserModel.company_id == current_user.company_id
+    ).count()
+    
+    active_users = db.query(UserModel).filter(
+        UserModel.company_id == current_user.company_id,
+        UserModel.is_active == True
+    ).count()
+    
     tasks = get_tasks(db)
+    tasks = [t for t in tasks if t.assignee.company_id == current_user.company_id]
+    
     total_tasks = len(tasks)
     completed_tasks = len([t for t in tasks if t.status == "completed"])
     total_payment = sum(t.payment_amount or 0 for t in tasks)
     
     return {
+        "company_id": current_user.company_id,
         "total_users": total_users,
         "active_users": active_users,
         "total_tasks": total_tasks,
@@ -43,11 +54,11 @@ async def get_all_users_with_financials(
     current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get all users with financial data (Owner-only)"""
-    if current_user.role.lower() != "owner":
-        raise HTTPException(status_code=403, detail="Owner access required")
+    """Get all users with financial data (SuperAdmin only)"""
+    if current_user.role.lower() != "super_admin":
+        raise HTTPException(status_code=403, detail="SuperAdmin access required")
     
-    users = get_users(db)
+    users = get_users(db, company_id=current_user.company_id)
     return [UserWithFinancials.model_validate(u) for u in users]
 
 
@@ -56,9 +67,10 @@ async def get_all_tasks_with_financials(
     current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get all tasks with financial data (Owner-only)"""
-    if current_user.role.lower() != "owner":
-        raise HTTPException(status_code=403, detail="Owner access required")
+    """Get all tasks with financial data (SuperAdmin only)"""
+    if current_user.role.lower() != "super_admin":
+        raise HTTPException(status_code=403, detail="SuperAdmin access required")
     
     tasks = get_tasks(db)
+    tasks = [t for t in tasks if t.assignee.company_id == current_user.company_id]
     return [TaskWithFinancials.model_validate(t) for t in tasks]

@@ -13,11 +13,12 @@ async def get_team_performance(
     current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Team performance metrics (Owner-only)"""
-    if current_user.role.lower() != "owner":
-        raise HTTPException(status_code=403, detail="Owner access required")
+    """Team performance metrics (SuperAdmin only)"""
+    if current_user.role.lower() != "super_admin":
+        raise HTTPException(status_code=403, detail="SuperAdmin access required")
     
     return {
+        "company_id": current_user.company_id,
         "overview": {
             "total_tasks": 42,
             "completed": 31,
@@ -28,17 +29,21 @@ async def get_team_performance(
         "by_employee": [
             {
                 "id": 1,
+                "user_id": "S-000001-A-00001-M-0000001",
                 "name": "Alex Chen",
                 "tasks_completed": 8,
                 "avg_completion_time_days": 2.1,
-                "capacity_utilization": 42
+                "capacity_utilization": 42,
+                "status": "ACTIVE"
             },
             {
                 "id": 2,
+                "user_id": "S-000001-A-00001-M-0000002",
                 "name": "Sarah Kim",
                 "tasks_completed": 12,
                 "avg_completion_time_days": 3.4,
-                "capacity_utilization": 75
+                "capacity_utilization": 75,
+                "status": "BUSY"
             }
         ],
         "by_category": [
@@ -54,11 +59,12 @@ async def get_workload_balance(
     current_user: UserModel = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Workload distribution across team (Owner-only)"""
-    if current_user.role.lower() != "owner":
-        raise HTTPException(status_code=403, detail="Owner access required")
+    """Workload distribution across team (SuperAdmin only)"""
+    if current_user.role.lower() != "super_admin":
+        raise HTTPException(status_code=403, detail="SuperAdmin access required")
     
     return {
+        "company_id": current_user.company_id,
         "balance_score": 87,
         "overloaded": ["Jon Rossi"],
         "underutilized": ["James O'Neil"],

@@ -1,3 +1,5 @@
+// src/components/auth/Login.tsx
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
@@ -32,16 +34,24 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-700 rounded-2xl flex items-center justify-center mx-auto">
-            <span className="text-white text-2xl font-bold">N</span>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        {/* Header */}
+        <div>
+          <div className="flex justify-center">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-2xl">N</span>
+            </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mt-4">NexusFlow AI</h1>
-          <p className="text-gray-500 mt-1">Business Management Platform</p>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            NexusFlow AI
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Business Management Platform
+          </p>
         </div>
 
+        {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -86,9 +96,33 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
           </Button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+        {/* Footer Links */}
+        <div className="mt-6 pt-6 border-t border-gray-100 text-center space-y-2">
+          {/* Demo Credentials */}
           <p className="text-sm text-gray-500">
             Demo: <span className="font-medium text-blue-600">owner / SecurePass123!</span>
+          </p>
+          
+          {/* ✅ ADDED: Register Link */}
+          <p className="text-sm text-gray-500">
+            New member?{' '}
+            <button
+              onClick={() => navigate('/register')}
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Register here
+            </button>
+          </p>
+          
+          {/* Create Company Link */}
+          <p className="text-sm text-gray-500">
+            New organization?{' '}
+            <button
+              onClick={() => navigate('/companies/new')}
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Create your company
+            </button>
           </p>
         </div>
       </div>

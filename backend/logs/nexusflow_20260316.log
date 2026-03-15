@@ -1,0 +1,624 @@
+2026-03-16 01:40:15,343 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 01:40:15,431 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 01:40:15,431 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 01:40:15,431 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 01:40:15,431 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 01:40:15,432 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 01:40:15,433 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 01:40:15,528 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 01:40:15,528 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 01:40:15,529 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 01:40:15,530 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 01:40:15,530 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 01:40:15,531 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 01:40:15,532 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 01:40:15,534 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 01:40:15,535 - sqlalchemy.engine.Engine - INFO - [generated in 0.00045s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 01:40:15,536 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 01:40:15,536 - sqlalchemy.engine.Engine - INFO - [cached since 0.002291s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 01:40:15,537 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 01:40:15,538 - sqlalchemy.engine.Engine - INFO - [cached since 0.003519s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 01:40:15,539 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 01:40:15,539 - sqlalchemy.engine.Engine - INFO - [cached since 0.004704s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 01:40:15,539 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 01:40:15,540 - sqlalchemy.engine.Engine - INFO - [cached since 0.005505s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 01:40:15,540 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 01:40:15,541 - sqlalchemy.engine.Engine - INFO - [cached since 0.006771s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 01:40:15,542 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:28:03,281 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:28:03,348 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:28:03,349 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:28:03,349 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:28:03,349 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:28:03,350 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:28:03,350 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:28:03,446 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:28:03,447 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:03,448 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:28:03,448 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:03,449 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:28:03,449 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:03,450 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:28:03,452 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:03,452 - sqlalchemy.engine.Engine - INFO - [generated in 0.00038s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:03,455 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:03,455 - sqlalchemy.engine.Engine - INFO - [cached since 0.002955s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:03,456 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:03,457 - sqlalchemy.engine.Engine - INFO - [cached since 0.004463s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:03,457 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:03,458 - sqlalchemy.engine.Engine - INFO - [cached since 0.005629s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:03,459 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:03,459 - sqlalchemy.engine.Engine - INFO - [cached since 0.007018s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:03,460 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:03,460 - sqlalchemy.engine.Engine - INFO - [cached since 0.007946s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:03,461 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:28:14,983 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:28:15,050 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:28:15,050 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:28:15,051 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:28:15,051 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:28:15,051 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:28:15,051 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:28:15,148 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:28:15,148 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:15,149 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:28:15,149 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:15,150 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:28:15,150 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:15,151 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:28:15,153 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:15,154 - sqlalchemy.engine.Engine - INFO - [generated in 0.00049s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:15,156 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:15,156 - sqlalchemy.engine.Engine - INFO - [cached since 0.002871s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:15,157 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:15,157 - sqlalchemy.engine.Engine - INFO - [cached since 0.003896s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:15,158 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:15,158 - sqlalchemy.engine.Engine - INFO - [cached since 0.00493s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:15,159 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:15,159 - sqlalchemy.engine.Engine - INFO - [cached since 0.006188s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:15,160 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:15,160 - sqlalchemy.engine.Engine - INFO - [cached since 0.007033s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:15,161 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:28:24,355 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:28:24,417 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:28:24,417 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:28:24,417 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:28:24,417 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:28:24,418 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:28:24,418 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:28:24,515 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:28:24,516 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:24,517 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:28:24,517 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:24,518 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:28:24,518 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:28:24,519 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:28:24,521 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:24,522 - sqlalchemy.engine.Engine - INFO - [generated in 0.00055s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:24,524 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:24,524 - sqlalchemy.engine.Engine - INFO - [cached since 0.002661s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:24,525 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:24,525 - sqlalchemy.engine.Engine - INFO - [cached since 0.003629s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:24,525 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:24,526 - sqlalchemy.engine.Engine - INFO - [cached since 0.004455s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:24,526 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:24,526 - sqlalchemy.engine.Engine - INFO - [cached since 0.00527s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:24,527 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:28:24,527 - sqlalchemy.engine.Engine - INFO - [cached since 0.006151s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:28:24,528 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:29:17,473 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:29:17,536 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:29:17,537 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:29:17,537 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:29:17,537 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:29:17,537 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:29:17,537 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:29:17,843 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:29:17,843 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:29:17,845 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:29:17,845 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:29:17,846 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:29:17,846 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:29:17,847 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:29:17,849 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:29:17,850 - sqlalchemy.engine.Engine - INFO - [generated in 0.00036s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:29:17,851 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:29:17,852 - sqlalchemy.engine.Engine - INFO - [cached since 0.002296s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:29:17,852 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:29:17,853 - sqlalchemy.engine.Engine - INFO - [cached since 0.003355s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:29:17,854 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:29:17,854 - sqlalchemy.engine.Engine - INFO - [cached since 0.004504s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:29:17,855 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:29:17,855 - sqlalchemy.engine.Engine - INFO - [cached since 0.00583s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:29:17,856 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:29:17,856 - sqlalchemy.engine.Engine - INFO - [cached since 0.006958s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:29:17,857 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:31:57,489 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:31:57,553 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:31:57,553 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:31:57,553 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:31:57,554 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:31:57,554 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:31:57,554 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:31:57,658 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:31:57,658 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:31:57,660 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:31:57,660 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:31:57,661 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:31:57,662 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:31:57,663 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:31:57,665 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:31:57,666 - sqlalchemy.engine.Engine - INFO - [generated in 0.00072s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:31:57,669 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:31:57,670 - sqlalchemy.engine.Engine - INFO - [cached since 0.004085s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:31:57,670 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:31:57,671 - sqlalchemy.engine.Engine - INFO - [cached since 0.005171s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:31:57,672 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:31:57,672 - sqlalchemy.engine.Engine - INFO - [cached since 0.006794s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:31:57,673 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:31:57,673 - sqlalchemy.engine.Engine - INFO - [cached since 0.008061s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:31:57,674 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:31:57,674 - sqlalchemy.engine.Engine - INFO - [cached since 0.008955s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:31:57,675 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:32:05,578 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:32:05,640 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:32:05,641 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:32:05,641 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:32:05,641 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:32:05,642 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:32:05,642 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:32:05,737 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:32:05,738 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:32:05,739 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:32:05,739 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:32:05,740 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:32:05,740 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:32:05,741 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:32:05,744 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:32:05,744 - sqlalchemy.engine.Engine - INFO - [generated in 0.00039s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:32:05,745 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:32:05,746 - sqlalchemy.engine.Engine - INFO - [cached since 0.002371s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:32:05,747 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:32:05,747 - sqlalchemy.engine.Engine - INFO - [cached since 0.003876s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:32:05,748 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:32:05,748 - sqlalchemy.engine.Engine - INFO - [cached since 0.004724s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:32:05,749 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:32:05,749 - sqlalchemy.engine.Engine - INFO - [cached since 0.005775s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:32:05,750 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:32:05,750 - sqlalchemy.engine.Engine - INFO - [cached since 0.006845s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:32:05,751 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:33:11,846 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:33:11,910 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:33:11,911 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:33:11,911 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:33:11,911 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:33:11,911 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:33:11,912 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:33:12,014 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:33:12,014 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:12,015 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:33:12,016 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:12,016 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:33:12,017 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:12,018 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:33:12,020 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:12,021 - sqlalchemy.engine.Engine - INFO - [generated in 0.00061s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:12,022 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:12,022 - sqlalchemy.engine.Engine - INFO - [cached since 0.002518s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:12,023 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:12,023 - sqlalchemy.engine.Engine - INFO - [cached since 0.003505s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:12,024 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:12,024 - sqlalchemy.engine.Engine - INFO - [cached since 0.004285s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:12,025 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:12,025 - sqlalchemy.engine.Engine - INFO - [cached since 0.005222s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:12,026 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:12,026 - sqlalchemy.engine.Engine - INFO - [cached since 0.006092s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:12,027 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:33:19,159 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:33:19,223 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:33:19,224 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:33:19,224 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:33:19,224 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:33:19,225 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:33:19,225 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:33:19,316 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:33:19,316 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:19,317 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:33:19,317 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:19,318 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:33:19,318 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:19,319 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:33:19,322 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:19,322 - sqlalchemy.engine.Engine - INFO - [generated in 0.00055s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:19,324 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:19,324 - sqlalchemy.engine.Engine - INFO - [cached since 0.002733s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:19,325 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:19,326 - sqlalchemy.engine.Engine - INFO - [cached since 0.003981s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:19,326 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:19,327 - sqlalchemy.engine.Engine - INFO - [cached since 0.005069s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:19,328 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:19,328 - sqlalchemy.engine.Engine - INFO - [cached since 0.006447s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:19,329 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:19,329 - sqlalchemy.engine.Engine - INFO - [cached since 0.007706s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:19,331 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:33:42,249 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:33:42,310 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:33:42,311 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:33:42,311 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:33:42,311 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:33:42,311 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:33:42,312 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:33:42,500 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:33:42,500 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:42,501 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:33:42,501 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:42,502 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:33:42,502 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:33:42,502 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:33:42,505 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:42,506 - sqlalchemy.engine.Engine - INFO - [generated in 0.00069s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:42,507 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:42,508 - sqlalchemy.engine.Engine - INFO - [cached since 0.002482s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:42,508 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:42,509 - sqlalchemy.engine.Engine - INFO - [cached since 0.003308s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:42,509 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:42,509 - sqlalchemy.engine.Engine - INFO - [cached since 0.004176s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:42,510 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:42,510 - sqlalchemy.engine.Engine - INFO - [cached since 0.005072s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:42,511 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:33:42,511 - sqlalchemy.engine.Engine - INFO - [cached since 0.005804s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:33:42,512 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:34:18,619 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:34:19,002 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:34:19,002 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:34:19,003 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:34:19,003 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:34:19,003 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:34:19,003 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:34:19,140 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:34:19,141 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:34:19,141 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:34:19,142 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:34:19,142 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:34:19,143 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:34:19,143 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:34:19,146 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:34:19,147 - sqlalchemy.engine.Engine - INFO - [generated in 0.00037s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:34:19,148 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:34:19,148 - sqlalchemy.engine.Engine - INFO - [cached since 0.001985s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:34:19,149 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:34:19,150 - sqlalchemy.engine.Engine - INFO - [cached since 0.003372s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:34:19,151 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:34:19,151 - sqlalchemy.engine.Engine - INFO - [cached since 0.004738s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:34:19,152 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:34:19,152 - sqlalchemy.engine.Engine - INFO - [cached since 0.005676s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:34:19,152 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:34:19,153 - sqlalchemy.engine.Engine - INFO - [cached since 0.006507s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:34:19,153 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:43:33,220 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:43:33,288 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:43:33,288 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:43:33,289 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:43:33,289 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:43:33,289 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:43:33,289 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:43:33,391 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:43:33,392 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:33,393 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:43:33,393 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:33,394 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:43:33,395 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:33,396 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:43:33,398 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:33,399 - sqlalchemy.engine.Engine - INFO - [generated in 0.00049s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:33,400 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:33,401 - sqlalchemy.engine.Engine - INFO - [cached since 0.002356s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:33,401 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:33,402 - sqlalchemy.engine.Engine - INFO - [cached since 0.003777s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:33,403 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:33,404 - sqlalchemy.engine.Engine - INFO - [cached since 0.005345s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:33,404 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:33,405 - sqlalchemy.engine.Engine - INFO - [cached since 0.006382s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:33,405 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:33,405 - sqlalchemy.engine.Engine - INFO - [cached since 0.007195s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:33,406 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:43:43,374 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:43:43,439 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:43:43,440 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:43:43,440 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:43:43,440 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:43:43,440 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:43:43,440 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:43:43,652 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:43:43,652 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:43,653 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:43:43,654 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:43,654 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:43:43,654 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:43,655 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:43:43,657 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:43,658 - sqlalchemy.engine.Engine - INFO - [generated in 0.00032s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:43,659 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:43,660 - sqlalchemy.engine.Engine - INFO - [cached since 0.002408s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:43,661 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:43,661 - sqlalchemy.engine.Engine - INFO - [cached since 0.003669s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:43,662 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:43,662 - sqlalchemy.engine.Engine - INFO - [cached since 0.004496s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:43,662 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:43,663 - sqlalchemy.engine.Engine - INFO - [cached since 0.005303s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:43,663 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:43,664 - sqlalchemy.engine.Engine - INFO - [cached since 0.006372s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:43,665 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:43:58,974 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:43:59,036 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:43:59,037 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:43:59,037 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:43:59,037 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:43:59,037 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:43:59,038 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:43:59,352 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:43:59,352 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:59,353 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:43:59,354 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:59,355 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:43:59,355 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:43:59,356 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:43:59,359 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:59,359 - sqlalchemy.engine.Engine - INFO - [generated in 0.00044s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:59,361 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:59,361 - sqlalchemy.engine.Engine - INFO - [cached since 0.002617s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:59,362 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:59,363 - sqlalchemy.engine.Engine - INFO - [cached since 0.004038s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:59,364 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:59,365 - sqlalchemy.engine.Engine - INFO - [cached since 0.006061s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:59,366 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:59,366 - sqlalchemy.engine.Engine - INFO - [cached since 0.007275s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:59,367 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:43:59,367 - sqlalchemy.engine.Engine - INFO - [cached since 0.008423s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:43:59,368 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:44:29,395 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:44:29,460 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:44:29,460 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:44:29,460 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:44:29,460 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:44:29,461 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:44:29,461 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:44:29,655 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:44:29,655 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:44:29,656 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:44:29,656 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:44:29,657 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:44:29,657 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:44:29,658 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:44:29,660 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:29,660 - sqlalchemy.engine.Engine - INFO - [generated in 0.00032s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:29,662 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:29,662 - sqlalchemy.engine.Engine - INFO - [cached since 0.002191s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:29,663 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:29,664 - sqlalchemy.engine.Engine - INFO - [cached since 0.003685s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:29,665 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:29,665 - sqlalchemy.engine.Engine - INFO - [cached since 0.004758s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:29,666 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:29,666 - sqlalchemy.engine.Engine - INFO - [cached since 0.005678s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:29,666 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:29,667 - sqlalchemy.engine.Engine - INFO - [cached since 0.006593s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:29,667 - sqlalchemy.engine.Engine - INFO - COMMIT
+2026-03-16 02:44:44,793 - app.main - INFO - 🚀 NexusFlow AI API starting up...
+2026-03-16 02:44:44,855 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.schemas
+2026-03-16 02:44:44,856 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.tables
+2026-03-16 02:44:44,856 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.types
+2026-03-16 02:44:44,856 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.constraints
+2026-03-16 02:44:44,856 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.defaults
+2026-03-16 02:44:44,856 - alembic.runtime.plugins - INFO - setup plugin alembic.autogenerate.comments
+2026-03-16 02:44:45,064 - sqlalchemy.engine.Engine - INFO - select pg_catalog.version()
+2026-03-16 02:44:45,065 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:44:45,066 - sqlalchemy.engine.Engine - INFO - select current_schema()
+2026-03-16 02:44:45,066 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:44:45,067 - sqlalchemy.engine.Engine - INFO - show standard_conforming_strings
+2026-03-16 02:44:45,067 - sqlalchemy.engine.Engine - INFO - [raw sql] {}
+2026-03-16 02:44:45,067 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2026-03-16 02:44:45,070 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:45,070 - sqlalchemy.engine.Engine - INFO - [generated in 0.00038s] {'table_name': 'users', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:45,072 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:45,072 - sqlalchemy.engine.Engine - INFO - [cached since 0.002251s ago] {'table_name': 'tasks', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:45,073 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:45,074 - sqlalchemy.engine.Engine - INFO - [cached since 0.003615s ago] {'table_name': 'task_comments', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:45,074 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:45,074 - sqlalchemy.engine.Engine - INFO - [cached since 0.0045s ago] {'table_name': 'audit_logs', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:45,075 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:45,075 - sqlalchemy.engine.Engine - INFO - [cached since 0.005227s ago] {'table_name': 'companies', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:45,076 - sqlalchemy.engine.Engine - INFO - SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2026-03-16 02:44:45,076 - sqlalchemy.engine.Engine - INFO - [cached since 0.005926s ago] {'table_name': 'id_sequences', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2026-03-16 02:44:45,077 - sqlalchemy.engine.Engine - INFO - COMMIT

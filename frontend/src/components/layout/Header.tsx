@@ -1,4 +1,6 @@
-import { useNavigate } from 'react-router-dom'; 
+// src/components/layout/Header.tsx
+
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import TeamPulseBar from '../profiles/TeamPulseBar';
 import Button from '../ui/Button';
@@ -13,11 +15,9 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-sm">
-      {/* Team Pulse Bar */}
+    <header className="bg-white">
       <TeamPulseBar />
       
-      {/* Main Header */}
       <div className="px-6 py-3 flex items-center justify-between border-b border-gray-100">
         <div className="flex items-center space-x-3">
           <div className="w-9 h-9 bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl flex items-center justify-center">
@@ -34,7 +34,7 @@ const Header = () => {
             <div className="flex items-center space-x-3">
               <div className="text-right">
                 <p className="text-sm font-medium text-gray-900">{user.full_name}</p>
-                <p className="text-xs text-gray-500">{user.role}</p>
+                <p className="text-xs text-gray-500">{user.position || user.role}</p>
               </div>
               <div className="w-9 h-9 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
                 {user.full_name.charAt(0)}

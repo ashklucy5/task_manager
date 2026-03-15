@@ -1,5 +1,9 @@
+"""
+Task CRUD Operations
+Uses string values for status/priority (not enums)
+"""
 from sqlalchemy.orm import Session
-from app.models.task import Task, TaskStatus, TaskPriority
+from app.models.task import Task  # ✅ REMOVED: TaskStatus, TaskPriority imports
 from app.models.user import User
 from app.schemas.task import TaskCreate, TaskUpdate
 from typing import Optional, List
@@ -27,9 +31,9 @@ def get_tasks(
     if assignee_id:
         query = query.filter(Task.assignee_id == assignee_id)
     if status:
-        query = query.filter(Task.status == status)
+        query = query.filter(Task.status == status)  # ✅ String comparison
     if priority:
-        query = query.filter(Task.priority == priority)
+        query = query.filter(Task.priority == priority)  # ✅ String comparison
     if category:
         # String comparison (case-insensitive)
         query = query.filter(Task.category.ilike(f"%{category.lower()}%"))
@@ -48,8 +52,8 @@ def create_task(db: Session, task: TaskCreate, assigned_by_id: int) -> Task:
         title=task.title,
         description=task.description,
         category=task.category,
-        priority=task.priority,
-        status=task.status,
+        priority=task.priority,  # ✅ String value
+        status=task.status,      # ✅ String value
         assignee_id=task.assignee_id,
         assigned_by_id=assigned_by_id,
         due_date=task.due_date,
@@ -92,10 +96,10 @@ def update_task_status(db: Session, task_id: int, status: str) -> Optional[Task]
     if not db_task:
         return None
     
-    db_task.status = status
+    db_task.status = status  # ✅ String value
     
     # Auto-set completed_at if status is completed
-    if status == "completed" and not db_task.completed_at:
+    if status == "COMPLETED" and not db_task.completed_at:  # ✅ Use uppercase string
         db_task.completed_at = datetime.utcnow()
     
     db.commit()
@@ -180,7 +184,12 @@ def delete_task_image(db: Session, task_id: int) -> Optional[Task]:
 
 # ==================== CLIENT INFO FUNCTIONS ====================
 
-def update_task_client_info(db: Session, task_id: int, client_name: Optional[str] = None, company_name: Optional[str] = None) -> Optional[Task]:
+def update_task_client_info(
+    db: Session, 
+    task_id: int, 
+    client_name: Optional[str] = None, 
+    company_name: Optional[str] = None
+) -> Optional[Task]:
     """Update task client/company details"""
     db_task = get_task(db, task_id)
     if not db_task:
@@ -210,7 +219,7 @@ def delete_task(db: Session, task_id: int) -> bool:
 def get_overdue_tasks(db: Session) -> List[Task]:
     """Get all overdue tasks"""
     return db.query(Task).filter(
-        Task.status.in_(["pending", "in_progress"]),
+        Task.status.in_(["PENDING", "IN_PROGRESS"]),  # ✅ Uppercase strings
         Task.due_date < datetime.utcnow()
     ).all()
 

@@ -1,29 +1,10 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey, Enum as SQLEnum, Numeric, JSON
+"""
+Task Model
+"""
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, ForeignKey, Numeric
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
-from enum import Enum
-
-
-class TaskStatus(str, Enum):
-    """Task status enumeration"""
-    PENDING = "pending"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-    ON_HOLD = "on_hold"
-    OVERDUE = "overdue"
-    CANCELLED = "cancelled"
-
-
-class TaskPriority(str, Enum):
-    """Task priority enumeration"""
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    URGENT = "urgent"
-
-
-# ✅ REMOVED: TaskCategory enum (now free-text string)
 
 
 class Task(Base):
@@ -31,55 +12,54 @@ class Task(Base):
     
     __tablename__ = "tasks"
     
-    # Primary Key
     id = Column(Integer, primary_key=True, index=True)
     
-    # Task Information
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
+    category = Column(String(100), nullable=False)
+    priority = Column(String(50), nullable=False, default="MEDIUM")
+    status = Column(String(50), nullable=False, default="PENDING")
     
-    # ✅ CHANGED: category is now free-text string (any value allowed)
-    category = Column(String(100), nullable=False, default="general")
+    # Assignee (hierarchical ID - string)
+    assignee_id = Column(String(50), ForeignKey("users.id"), nullable=False, index=True)
+    assigned_by_id = Column(String(50), ForeignKey("users.id"), nullable=True, index=True)
     
-    priority = Column(SQLEnum(TaskPriority), nullable=False, default=TaskPriority.MEDIUM)
-    status = Column(SQLEnum(TaskStatus), nullable=False, default=TaskStatus.PENDING)
+    # Requirements
+    requirements = Column(Text, nullable=True)
+    requirements_checklist = Column(Text, nullable=True)
+    requirements_completed_at = Column(DateTime(timezone=True), nullable=True)
     
-    # Assignment
-    assignee_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    assignee = relationship("User", foreign_keys=[assignee_id], backref="assigned_tasks")
+    # Client info
+    client_name = Column(String(255), nullable=True)
+    company_name = Column(String(255), nullable=True)
     
-    assigned_by_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    assigned_by = relationship("User", foreign_keys=[assigned_by_id])
-    
-    # ✅ NEW: Requirements Tracking
-    requirements = Column(Text, nullable=True)  # Detailed requirements/instructions
-    requirements_checklist = Column(JSON, nullable=True)  # [{"item": "...", "completed": true/false}]
-    requirements_completed_at = Column(DateTime(timezone=True), nullable=True)  # When all requirements were met
-    
-    # ✅ NEW: Order/Client Details (Optional)
-    client_name = Column(String(255), nullable=True)  # Person who ordered
-    company_name = Column(String(255), nullable=True)  # Company who ordered
-    
-    # ✅ NEW: Product/Task Image (Optional)
+    # Image
     image_url = Column(String(500), nullable=True)
     image_filename = Column(String(255), nullable=True)
+    image_cloudinary_public_id = Column(String(255), nullable=True)
+    image_cloudinary_url = Column(String(500), nullable=True)
     
-    # Financial Data (Owner-only visibility)
-    payment_amount = Column(Integer, nullable=True)  # Task payment in cents
+    # Financial
+    payment_amount = Column(Integer, nullable=True)
     is_paid = Column(Boolean, default=False)
     
-    # Timeline
+    # Dates
     due_date = Column(DateTime(timezone=True), nullable=False)
     started_at = Column(DateTime(timezone=True), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     
-    # Metadata
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     
-    # AI Fields
+    # AI fields
     estimated_hours = Column(Numeric(5, 2), nullable=True)
     ai_priority_score = Column(Numeric(5, 2), nullable=True)
+    
+    # Relationships
+    assignee = relationship("User", foreign_keys=[assignee_id], back_populates="tasks_assigned")
+    assigned_by = relationship("User", foreign_keys=[assigned_by_id], back_populates="tasks_created")
+    comments = relationship("TaskComment", back_populates="task", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<Task(id={self.id}, title={self.title}, status={self.status})>"

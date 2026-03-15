@@ -1,35 +1,32 @@
+"""
+Password hashing and JWT token management
+Using Argon2 - most secure, no 72-byte limit
+"""
 from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict
-import bcrypt
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from app.core.config import settings
 
-# Password hashing context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Argon2 password hashing (no 72-byte limit)
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a password using bcrypt directly"""
-    try:
-        password_bytes = plain_password.encode('utf-8')[:72]  # Truncate to 72 bytes
-        hashed_bytes = hashed_password.encode('utf-8')
-        return bcrypt.checkpw(password_bytes, hashed_bytes)
-    except Exception:
-        return False
+    """Verify password against hash"""
+    return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password: str) -> str:
-    """Hash a password using bcrypt directly (handles 72-byte limit)"""
-    # Truncate to 72 bytes before hashing (bcrypt limit)
-    password_bytes = password.encode('utf-8')[:72]
-    salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(password_bytes, salt)
-    return hashed.decode('utf-8')
+    """Hash password with Argon2"""
+    return pwd_context.hash(password)
 
 
-def create_access_token(data: Dict[str, str], expires_delta: Optional[timedelta] = None) -> str:
-    """Create a JWT access token with UTC timezone awareness"""
+def create_access_token(
+    data: Dict[str, str],
+    expires_delta: Optional[timedelta] = None
+) -> str:
+    """Create JWT access token"""
     to_encode = data.copy()
     
     if expires_delta:
@@ -44,7 +41,7 @@ def create_access_token(data: Dict[str, str], expires_delta: Optional[timedelta]
 
 
 def decode_access_token(token: str) -> Optional[Dict[str, str]]:
-    """Decode and validate a JWT access token"""
+    """Decode and validate JWT access token"""
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload
