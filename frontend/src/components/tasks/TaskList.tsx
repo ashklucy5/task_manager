@@ -1,11 +1,11 @@
 // src/components/tasks/TaskList.tsx
 
 import { useState, useEffect } from 'react';
-import type { Task } from '../../types';
+import { useAuthStore } from '../../store/authStore';
+import type { Task, UserRole, TaskStatus } from '../../types';
 import { tasksApi } from '../../services/api';
 import TaskCard from './TaskCard';
 import Skeleton from '../ui/Skeleton';
-// import Button from '../ui/Button';
 
 interface TaskListProps {
   filter?: 'all' | 'my-tasks' | 'completed' | 'pending' | 'overdue';
@@ -14,10 +14,15 @@ interface TaskListProps {
 }
 
 const TaskList = ({ filter = 'all', showAssignee = true, onTaskUpdate }: TaskListProps) => {
+  const { user } = useAuthStore();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<TaskStatus | 'all'>('all');
+
+  const userRole: UserRole = user?.role || 'member';
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
 
   useEffect(() => {
     fetchTasks();
@@ -42,6 +47,49 @@ const TaskList = ({ filter = 'all', showAssignee = true, onTaskUpdate }: TaskLis
     }
   };
 
+  const canUpdateTaskStatus = (task: Task): boolean => {
+    if (isSuperAdmin) return true;
+    if (isAdmin) return true;
+    if (userRole === 'member') return task.assignee_id === user?.id;
+    return false;
+  };
+
+  const handleStatusChange = async (taskId: number, newStatus: TaskStatus) => {
+    const taskIndex = tasks.findIndex(t => t.id === taskId);
+    if (taskIndex === -1) return;
+    
+    const originalTask = tasks[taskIndex];
+    const updatedTasks = [...tasks];
+    updatedTasks[taskIndex] = { ...originalTask, status: newStatus };
+    setTasks(updatedTasks);
+    
+    try {
+      await tasksApi.updateTaskStatus(taskId, newStatus);
+      onTaskUpdate?.();
+    } catch (error: any) {
+      console.error('Failed to update task status:', error);
+      const revertedTasks = [...tasks];
+      revertedTasks[taskIndex] = originalTask;
+      setTasks(revertedTasks);
+      alert('Failed to update status. Please try again.');
+    }
+  };
+
+  // ✅ NEW: Delete task handler
+  const handleDeleteTask = async (taskId: number) => {
+    if (!confirm('Are you sure you want to delete this task?')) return;
+    
+    try {
+      await tasksApi.deleteTask(taskId);
+      const updatedTasks = tasks.filter(t => t.id !== taskId);
+      setTasks(updatedTasks);
+      onTaskUpdate?.();
+    } catch (error: any) {
+      console.error('Failed to delete task:', error);
+      alert('Failed to delete task. Please try again.');
+    }
+  };
+
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'all' || task.status === statusFilter;
@@ -52,16 +100,6 @@ const TaskList = ({ filter = 'all', showAssignee = true, onTaskUpdate }: TaskLis
     
     return matchesSearch && matchesStatus;
   });
-
-  const handleStatusChange = async (taskId: number, newStatus: string) => {
-    try {
-      await tasksApi.updateTaskStatus(taskId, newStatus);
-      fetchTasks();
-      onTaskUpdate?.();
-    } catch (error) {
-      console.error('Failed to update task status:', error);
-    }
-  };
 
   if (loading) {
     return (
@@ -75,7 +113,6 @@ const TaskList = ({ filter = 'all', showAssignee = true, onTaskUpdate }: TaskLis
 
   return (
     <div className="space-y-4">
-      {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <input
           type="text"
@@ -86,7 +123,7 @@ const TaskList = ({ filter = 'all', showAssignee = true, onTaskUpdate }: TaskLis
         />
         <select
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={(e) => setStatusFilter(e.target.value as TaskStatus | 'all')}
           className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="all">All Status</option>
@@ -99,12 +136,10 @@ const TaskList = ({ filter = 'all', showAssignee = true, onTaskUpdate }: TaskLis
         </select>
       </div>
 
-      {/* Task Count */}
       <div className="text-sm text-gray-500">
         Showing {filteredTasks.length} of {tasks.length} tasks
       </div>
 
-      {/* Task List */}
       {filteredTasks.length > 0 ? (
         <div>
           {filteredTasks.map((task) => (
@@ -112,7 +147,10 @@ const TaskList = ({ filter = 'all', showAssignee = true, onTaskUpdate }: TaskLis
               key={task.id}
               task={task}
               showAssignee={showAssignee}
+              canEditStatus={canUpdateTaskStatus(task)}
+              canDeleteTask={isSuperAdmin || isAdmin}  // ✅ Pass delete permission
               onStatusChange={handleStatusChange}
+              onDeleteTask={handleDeleteTask}  // ✅ Pass delete handler
             />
           ))}
         </div>

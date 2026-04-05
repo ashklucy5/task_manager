@@ -14,11 +14,14 @@ export interface User {
   created_at: string;
   avatar_url?: string;
   company_id?: number;
+  company_name?: string;
   company_code?: string;
   parent_id?: string; 
   salary?: number;
   payment_rate?: number;
   confidential_notes?: string;
+  is_online?: boolean;
+  last_seen?: string;
 }
 
 export interface UserProfile {
@@ -32,6 +35,10 @@ export interface UserProfile {
   avatar_url?: string;
   company_id?: number;
   company_code?: string;
+  is_online?: boolean;
+  last_seen?: string;
+  salary?: number;           // Monthly salary in cents
+  payment_rate?: number;
 }
 
 export type UserRole = 'super_admin' | 'admin' | 'member';
@@ -86,7 +93,8 @@ export interface Task {
   requirements_checklist?: any;
   client_name?: string;
   company_name?: string;
-  image_url?: string;
+  image_url?: string;    
+  image_urls?: string[];
   estimated_hours?: number;
   ai_priority_score?: number;
   progress?: number;

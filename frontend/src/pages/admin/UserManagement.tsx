@@ -62,9 +62,7 @@ const UserManagement = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // ✅ NEW: Extract company_id from hierarchical parent_id
   const extractCompanyIdFromParentId = (parentId: string): number | null => {
-    // Pattern: CA{number}-... (e.g., "CA1-S-000001" → 1)
     const match = parentId.match(/^CA(\d+)/);
     if (match && match[1]) {
       return parseInt(match[1], 10);
@@ -73,13 +71,11 @@ const UserManagement = () => {
   };
 
   const openModal = (type: 'super_admin' | 'admin' | 'member') => {
-    console.log(`🔵 [UserManagement] Opening modal for: ${type}`);
     setModalType(type);
     setShowModal(true);
     setError('');
     setSuccess('');
     
-    // Set default role based on modal type
     setFormData({
       email: '',
       full_name: '',
@@ -97,49 +93,28 @@ const UserManagement = () => {
     setError('');
     setSuccess('');
 
-    console.log(`🔵 [UserManagement] Submitting form for modalType: ${modalType}`);
-    console.log('🔵 [UserManagement] Form data:', formData);
-
-    // Validate based on modal type
-    if (modalType === 'super_admin') {
-      console.log('🔵 [UserManagement] Validating SuperAdmin creation...');
-      if (!formData.company_id) {
-        console.error('❌ [UserManagement] MISSING: company_id is required for SuperAdmin');
-        setError('Company ID is required');
-        return;
-      }
-      console.log('✅ [UserManagement] company_id present:', formData.company_id);
+    if (modalType === 'super_admin' && !formData.company_id) {
+      setError('Company ID is required');
+      return;
     }
     
-    if (modalType === 'admin') {
-      console.log('🔵 [UserManagement] Validating Admin creation...');
-      if (!formData.parent_id) {
-        console.error('❌ [UserManagement] MISSING: parent_id is required for Admin');
-        setError('Parent ID (SuperAdmin) is required');
-        return;
-      }
-      console.log('✅ [UserManagement] parent_id present:', formData.parent_id);
+    if (modalType === 'admin' && !formData.parent_id) {
+      setError('Parent ID (SuperAdmin) is required');
+      return;
     }
     
     if (modalType === 'member') {
-      console.log('🔵 [UserManagement] Validating Member creation...');
       if (!formData.company_code) {
-        console.error('❌ [UserManagement] MISSING: company_code is required for Member');
         setError('Company Code is required');
         return;
       }
-      console.log('✅ [UserManagement] company_code present:', formData.company_code);
-      
       if (!formData.parent_id) {
-        console.error('❌ [UserManagement] MISSING: parent_id is required for Member');
         setError('Admin ID (Parent) is required');
         return;
       }
-      console.log('✅ [UserManagement] parent_id present:', formData.parent_id);
     }
 
     try {
-      // Build payload with logging
       const payload: any = {
         email: formData.email,
         username: formData.email,
@@ -148,63 +123,26 @@ const UserManagement = () => {
         position: formData.position.toUpperCase(),
         role: formData.role,
       };
-      console.log('🔵 [UserManagement] Base payload:', { ...payload, password: '***' });
 
-      // ✅ FIXED: Add type-specific fields with auto-extracted company_id
       if (modalType === 'super_admin') {
         payload.company_id = formData.company_id;
-        console.log('🔵 [UserManagement] Added company_id:', formData.company_id);
-        // ✅ Don't send parent_id for SuperAdmin (they have no parent)
-        console.log('🔵 [UserManagement] Skipping parent_id for SuperAdmin (no parent)');
-        
-      } else if (modalType === 'admin') {
-        // ✅ Auto-extract company_id from parent_id
+      } else if (modalType === 'admin' || modalType === 'member') {
         if (formData.parent_id) {
           const extractedCompanyId = extractCompanyIdFromParentId(formData.parent_id);
-          if (extractedCompanyId) {
-            payload.company_id = extractedCompanyId;
-            console.log('🔵 [UserManagement] ✅ Auto-extracted company_id from parent_id:', extractedCompanyId);
-          } else {
-            console.warn('⚠️ [UserManagement] Could not extract company_id from parent_id:', formData.parent_id);
-            // Fallback to current user's company_id
-            payload.company_id = user?.company_id;
-            console.log('🔵 [UserManagement] Using fallback company_id:', user?.company_id);
-          }
+          payload.company_id = extractedCompanyId || user?.company_id;
           payload.parent_id = formData.parent_id;
-          console.log('🔵 [UserManagement] Added parent_id:', formData.parent_id);
         }
-        
-      } else if (modalType === 'member') {
-        // ✅ Auto-extract company_id from parent_id
-        if (formData.parent_id) {
-          const extractedCompanyId = extractCompanyIdFromParentId(formData.parent_id);
-          if (extractedCompanyId) {
-            payload.company_id = extractedCompanyId;
-            console.log('🔵 [UserManagement] ✅ Auto-extracted company_id from parent_id:', extractedCompanyId);
-          } else {
-            console.warn('⚠️ [UserManagement] Could not extract company_id from parent_id:', formData.parent_id);
-            // Fallback to current user's company_id
-            payload.company_id = user?.company_id;
-            console.log('🔵 [UserManagement] Using fallback company_id:', user?.company_id);
-          }
+        if (modalType === 'member') {
           payload.company_code = formData.company_code;
-          console.log('🔵 [UserManagement] Added company_code:', formData.company_code);
-          payload.parent_id = formData.parent_id;
-          console.log('🔵 [UserManagement] Added parent_id:', formData.parent_id);
         }
       }
 
-      console.log('🔵 [UserManagement] Final payload to send:', { ...payload, password: '***' });
-      console.log('🔵 [UserManagement] Calling usersApi.createUser()...');
-
       await usersApi.createUser(payload);
 
-      console.log('✅ [UserManagement] User created successfully!');
       setSuccess(`User created successfully!`);
       setShowModal(false);
       fetchUsers();
       
-      // Reset form
       setFormData({
         email: '',
         full_name: '',
@@ -213,27 +151,13 @@ const UserManagement = () => {
         role: 'member',
       });
     } catch (err: any) {
-      console.error('❌ [UserManagement] API Error:', err);
-      console.error('❌ [UserManagement] Error response:', err.response);
-      console.error('❌ [UserManagement] Error status:', err.response?.status);
-      console.error('❌ [UserManagement] Error data:', err.response?.data);
-      
       const detail = err.response?.data?.detail;
-      console.error('❌ [UserManagement] Error detail:', detail);
-      
       if (Array.isArray(detail)) {
-        // Pydantic validation errors
-        console.error('❌ [UserManagement] Validation errors:', detail);
-        const messages = detail.map((d: any) => {
-          console.error(`   - Field: ${d.loc?.join('.')}, Error: ${d.msg}, Input: ${d.input}`);
-          return d.msg;
-        });
+        const messages = detail.map((d: any) => d.msg);
         setError(messages.join(', '));
       } else if (typeof detail === 'string') {
-        console.error('❌ [UserManagement] String error:', detail);
         setError(detail);
       } else {
-        console.error('❌ [UserManagement] Unknown error format');
         setError('Failed to create user');
       }
     }
@@ -271,31 +195,17 @@ const UserManagement = () => {
         </div>
         {canCreateUser && (
           <div className="flex space-x-2">
-            {/* ✅ SuperAdmin Button - Only for SuperAdmins */}
             {isSuperAdmin && (
-              <Button 
-                onClick={() => openModal('super_admin')}
-                className="bg-purple-600 hover:bg-purple-700"
-              >
+              <Button onClick={() => openModal('super_admin')} className="bg-purple-600 hover:bg-purple-700">
                 + Create Super Admin
               </Button>
             )}
-            
-            {/* ✅ Admin Button - Only for SuperAdmins */}
             {isSuperAdmin && (
-              <Button 
-                onClick={() => openModal('admin')}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
+              <Button onClick={() => openModal('admin')} className="bg-blue-600 hover:bg-blue-700">
                 + Create Admin
               </Button>
             )}
-            
-            {/* ✅ Member Button - For SuperAdmins and Admins */}
-            <Button 
-              onClick={() => openModal('member')}
-              className="bg-green-600 hover:bg-green-700"
-            >
+            <Button onClick={() => openModal('member')} className="bg-green-600 hover:bg-green-700">
               + Add Member
             </Button>
           </div>
@@ -338,9 +248,18 @@ const UserManagement = () => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
-                      {u.full_name.charAt(0)}
-                    </div>
+                    {/* ✅ FIXED: Show avatar if available */}
+                    {u.avatar_url ? (
+                      <img
+                        src={u.avatar_url}
+                        alt={u.full_name}
+                        className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
+                        {u.full_name.charAt(0)}
+                      </div>
+                    )}
                     <div>
                       <p className="font-medium text-gray-900">{u.full_name}</p>
                       <p className="text-sm text-gray-500">{u.email}</p>
@@ -394,7 +313,6 @@ const UserManagement = () => {
           }
         >
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
               <input
@@ -408,7 +326,6 @@ const UserManagement = () => {
               />
             </div>
 
-            {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
               <input
@@ -422,7 +339,6 @@ const UserManagement = () => {
               />
             </div>
 
-            {/* Position */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Position *</label>
               <input
@@ -436,7 +352,6 @@ const UserManagement = () => {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Password *</label>
               <input
@@ -451,7 +366,6 @@ const UserManagement = () => {
               />
             </div>
 
-            {/* ✅ Super Admin Specific: Company ID */}
             {modalType === 'super_admin' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Company ID *</label>
@@ -470,7 +384,6 @@ const UserManagement = () => {
               </div>
             )}
 
-            {/* ✅ Admin Specific: Parent ID (SuperAdmin) */}
             {modalType === 'admin' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -494,7 +407,6 @@ const UserManagement = () => {
               </div>
             )}
 
-            {/* ✅ Member Specific: Company Code + Parent ID (Admin) */}
             {modalType === 'member' && (
               <>
                 <div>
@@ -536,7 +448,6 @@ const UserManagement = () => {
               </>
             )}
 
-            {/* Actions */}
             <div className="flex space-x-3 pt-4">
               <Button 
                 type="button" 

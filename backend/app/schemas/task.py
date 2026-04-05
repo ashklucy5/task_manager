@@ -42,6 +42,7 @@ class TaskCreate(BaseModel):
     # Client Info
     client_name: Optional[str] = Field(None, max_length=255)
     company_name: Optional[str] = Field(None, max_length=255)
+    image_urls: Optional[List[str]] = None  # ✅ Multiple images
     
     # Category (free text)
     category: str = Field(default="general", min_length=1, max_length=100)
@@ -85,7 +86,8 @@ class TaskUpdate(BaseModel):
     # Client Info
     client_name: Optional[str] = Field(None, max_length=255)
     company_name: Optional[str] = Field(None, max_length=255)
-    
+    image_url: Optional[str] = None  # ✅ Legacy single image
+    image_urls: Optional[List[str]] = None  # ✅ NEW: Multiple images
     # Category
     category: Optional[str] = Field(None, min_length=1, max_length=100)
     
@@ -136,8 +138,9 @@ class TaskResponse(BaseModel):
     company_name: Optional[str] = None
     
     # Image
-    image_url: Optional[str] = None
-    image_filename: Optional[str] = None
+    image_url: Optional[str] = None  # ✅ Legacy single image
+    image_filename: Optional[str] = None  # ✅ Legacy filename
+    image_urls: Optional[List[str]] = None  # ✅ NEW: Multiple images
     
     # Category (free text)
     category: str
@@ -178,9 +181,10 @@ class TaskWithFinancials(BaseModel):
     client_name: Optional[str] = None
     company_name: Optional[str] = None
     
-    # Image
-    image_url: Optional[str] = None
-    image_filename: Optional[str] = None
+    # ✅ Image - FIXED: Add image_urls
+    image_url: Optional[str] = None  # ✅ Legacy single image
+    image_filename: Optional[str] = None  # ✅ Legacy filename
+    image_urls: Optional[List[str]] = None  # ✅ NEW: Multiple images (ADDED)
     
     # Category
     category: str

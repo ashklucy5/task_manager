@@ -69,23 +69,22 @@ class UserCreate(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    """Schema for updating user information"""
+    """Schema for updating user information - ALL fields optional"""
     email: Optional[EmailStr] = None
     username: Optional[str] = Field(None, max_length=100)
     full_name: Optional[str] = Field(None, min_length=1, max_length=255)
     password: Optional[str] = Field(None, min_length=8)
-    role: Optional[str] = Field(None, pattern="^(super_admin|admin|member)$")
+    role: Optional[str] = Field(None, pattern="^(super_admin|admin|member)$")  # ✅ Optional
     status: Optional[UserStatus] = None
     parent_id: Optional[str] = None
     position: Optional[str] = Field(None, min_length=1, max_length=100)
     salary: Optional[int] = None
     payment_rate: Optional[int] = None
     confidential_notes: Optional[str] = None
-
+    
     @field_validator('password')
     @classmethod
     def validate_password_strength(cls, v: Optional[str]) -> Optional[str]:
-        """Validate password meets minimum requirements"""
         if v:
             if len(v) < 8:
                 raise ValueError('Password must be at least 8 characters')
@@ -96,7 +95,6 @@ class UserUpdate(BaseModel):
             if not any(c.isdigit() for c in v):
                 raise ValueError('Password must contain at least one number')
         return v
-
 
 class UserLogin(BaseModel):
     """Schema for user login (username or email)"""
@@ -136,6 +134,8 @@ class UserResponse(BaseModel):
     full_name: str
     role: str
     company_id: int
+    company_code: Optional[str] = None
+    company_name: Optional[str] = None
     parent_id: Optional[str] = None
     position: Optional[str] = None
     status: UserStatus
@@ -181,5 +181,9 @@ class UserProfile(BaseModel):
     status: UserStatus
     avatar_url: Optional[str] = None
     capacity: Optional[int] = None
+    is_online: bool = False
+    last_seen: Optional[datetime] = None
+    salary: Optional[int] = None
+    payment_rate: Optional[int] = None
     
     model_config = {"from_attributes": True}

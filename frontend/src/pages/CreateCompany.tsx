@@ -6,28 +6,16 @@ import { useAuthStore } from '../store/authStore';
 import { companiesApi } from '../services/api';
 import Button from '../components/ui/Button';
 
-interface FormData {
-  // Company fields
-  company_name: string;
-  company_code: string;
-  company_description: string;
-  
-  // Admin fields
-  admin_email: string;
-  admin_full_name: string;
-  admin_password: string;
-  admin_position: string;
-  admin_salary: string;
-  admin_payment_rate: string;
-}
+// ✅ REMOVED: Unused FormData interface
 
 const CreateCompanyPage = () => {
   const navigate = useNavigate();
-  const { setUser } = useAuthStore(); // ✅ FIXED: Only use setUser
+  const { setUser } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const [formData, setFormData] = useState<FormData>({
+  // ✅ Inline state with type inference
+  const [formData, setFormData] = useState({
     company_name: '',
     company_code: '',
     company_description: '',
@@ -41,12 +29,9 @@ const CreateCompanyPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     let value = e.target.value;
-    
-    // Auto-uppercase company code and position
     if (e.target.name === 'company_code' || e.target.name === 'admin_position') {
       value = value.toUpperCase();
     }
-    
     setFormData({ ...formData, [e.target.name]: value });
   };
 
@@ -81,11 +66,10 @@ const CreateCompanyPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
     if (!validateForm()) return;
-    
+
     setLoading(true);
-    
+
     try {
       const payload = {
         company: {
@@ -104,14 +88,11 @@ const CreateCompanyPage = () => {
         },
       };
 
-      // ✅ FIXED: Access .data property from AxiosResponse
       const response = await companiesApi.createWithAdmin(payload);
       
-      // ✅ FIXED: Access response.data.access_token and response.data.admin
       localStorage.setItem('access_token', response.data.access_token);
       setUser(response.data.admin);
       
-      // Redirect to dashboard
       navigate('/dashboard');
       
     } catch (err: any) {
@@ -122,32 +103,38 @@ const CreateCompanyPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="glass-card w-full max-w-4xl p-10 animate-scale-in">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-2xl">N</span>
+        <div className="text-center mb-10">
+          <div className="w-20 h-20 glass-card mx-auto flex items-center justify-center mb-6 animate-float">
+            <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-700">N</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Create New Company</h1>
-          <p className="text-gray-500 mt-2">Set up your organization and first administrator</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Create New Company</h1>
+          <p className="text-gray-500">Set up your organization and first administrator</p>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
-            {error}
+          <div className="bg-red-50 border border-red-200 text-red-600 px-5 py-4 rounded-xl mb-6 animate-slide-down">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">⚠️</span>
+              <span>{error}</span>
+            </div>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Company Section */}
-          <div className="bg-white rounded-xl border border-gray-100 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Company Information</h2>
+          <div className="glass-panel p-6 rounded-2xl">
+            <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+              <span className="text-2xl">🏢</span>
+              Company Information
+            </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Company Name *
                 </label>
                 <input
@@ -156,13 +143,13 @@ const CreateCompanyPage = () => {
                   value={formData.company_name}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="input-modern w-full"
                   placeholder="e.g., TechCorp Solutions"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Company Code *
                 </label>
                 <input
@@ -172,7 +159,7 @@ const CreateCompanyPage = () => {
                   onChange={handleChange}
                   required
                   maxLength={20}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
+                  className="input-modern w-full uppercase"
                   placeholder="e.g., TECH1"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -181,7 +168,7 @@ const CreateCompanyPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Description
                 </label>
                 <textarea
@@ -189,7 +176,7 @@ const CreateCompanyPage = () => {
                   value={formData.company_description}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="input-modern w-full"
                   placeholder="Brief description of your company"
                 />
               </div>
@@ -197,12 +184,15 @@ const CreateCompanyPage = () => {
           </div>
 
           {/* Admin Section */}
-          <div className="bg-white rounded-xl border border-gray-100 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">First Administrator</h2>
+          <div className="glass-panel p-6 rounded-2xl">
+            <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+              <span className="text-2xl">👤</span>
+              First Administrator
+            </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Admin Email *
                 </label>
                 <input
@@ -211,7 +201,7 @@ const CreateCompanyPage = () => {
                   value={formData.admin_email}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="input-modern w-full"
                   placeholder="admin@yourcompany.com"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -220,7 +210,7 @@ const CreateCompanyPage = () => {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Full Name *
                 </label>
                 <input
@@ -229,13 +219,13 @@ const CreateCompanyPage = () => {
                   value={formData.admin_full_name}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="input-modern w-full"
                   placeholder="John Doe"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Position *
                 </label>
                 <input
@@ -244,7 +234,7 @@ const CreateCompanyPage = () => {
                   value={formData.admin_position}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
+                  className="input-modern w-full uppercase"
                   placeholder="e.g., CEO, CTO, MANAGER"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -253,7 +243,7 @@ const CreateCompanyPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Password *
                 </label>
                 <input
@@ -263,13 +253,13 @@ const CreateCompanyPage = () => {
                   onChange={handleChange}
                   required
                   minLength={8}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="input-modern w-full"
                   placeholder="•••••••• (min 8 chars)"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Salary ($)
                 </label>
                 <input
@@ -278,13 +268,13 @@ const CreateCompanyPage = () => {
                   value={formData.admin_salary}
                   onChange={handleChange}
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="input-modern w-full"
                   placeholder="0"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Payment Rate ($/hr)
                 </label>
                 <input
@@ -294,7 +284,7 @@ const CreateCompanyPage = () => {
                   onChange={handleChange}
                   min="0"
                   step="0.01"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="input-modern w-full"
                   placeholder="0.00"
                 />
               </div>
@@ -309,6 +299,7 @@ const CreateCompanyPage = () => {
               variant="secondary"
               fullWidth
               disabled={loading}
+              className="btn-modern-secondary"
             >
               Cancel
             </Button>
@@ -317,7 +308,7 @@ const CreateCompanyPage = () => {
               isLoading={loading}
               variant="primary"
               fullWidth
-              className="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800"
+              className="btn-modern"
             >
               Create Company & Admin
             </Button>
@@ -330,7 +321,7 @@ const CreateCompanyPage = () => {
             Already have an account?{' '}
             <button
               onClick={() => navigate('/login')}
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
             >
               Sign in instead
             </button>

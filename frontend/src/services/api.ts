@@ -1,4 +1,3 @@
-// src/services/api.ts
 import axios, { type AxiosInstance } from 'axios';
 import type {
   AuthResponse,
@@ -20,7 +19,6 @@ const api: AxiosInstance = axios.create({
   },
 });
 
-// Request interceptor: Add auth token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
@@ -32,7 +30,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor: Handle 401 errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -44,9 +41,6 @@ api.interceptors.response.use(
   }
 );
 
-// ==================== NAMED EXPORTS FOR API SERVICES ====================
-
-// Auth API
 export const authApi = {
   login: (credentials: LoginCredentials) =>
     api.post<AuthResponse>('/auth/login', credentials),
@@ -56,19 +50,18 @@ export const authApi = {
     api.get<User>('/users/me'),
 };
 
-// Users API
 export const usersApi = {
   getTeamProfiles: () =>
     api.get<UserProfile[]>('/users/team-profiles'),
-  getUserById: (id: string) =>  // ✅ CHANGED: number → string
+  getUserById: (id: string) =>
     api.get<User>(`/users/${id}`),
   getUsers: (params?: Record<string, unknown>) =>
     api.get<User[]>('/users/', { params }),
   createUser: (data: UserCreate) =>
     api.post<User>('/users/', data),
-  updateUser: (id: string, data: Record<string, unknown>) =>  // ✅ CHANGED
+  updateUser: (id: string, data: Record<string, unknown>) =>
     api.put<User>(`/users/${id}`, data),
-  deleteUser: (id: string) =>  // ✅ CHANGED
+  deleteUser: (id: string) =>
     api.delete(`/users/${id}`),
   getMe: () =>
     api.get<User>('/users/me'),
@@ -76,17 +69,26 @@ export const usersApi = {
     api.put(`/users/me/status?new_status=${status}`),
   heartbeat: () =>
     api.post('/users/me/heartbeat'),
+  setOffline: () =>
+    api.post('/users/me/set-offline'),
+  updateMyPassword: (data: { current_password: string; new_password: string }) =>
+    api.put<User>('/users/me/password', data),
+  uploadAvatar: (userId: string, formData: FormData) =>
+    api.post<User>(`/users/${userId}/avatar`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  deleteAvatar: (userId: string) =>
+    api.delete<User>(`/users/${userId}/avatar`),
 };
 
-// Tasks API
 export const tasksApi = {
   getMyTasks: () =>
     api.get<Task[]>('/tasks/me'),
   getAllTasks: (params?: Record<string, unknown>) =>
     api.get<Task[]>('/tasks/', { params }),
-  getTaskById: (id: number) =>  // ✅ Task ID stays number
+  getTaskById: (id: number) =>
     api.get<Task>(`/tasks/${id}`),
-  createTask: (data: Record<string, unknown>) =>
+  createTask: (data: FormData | Record<string, unknown>) =>
     api.post<Task>('/tasks/', data),
   updateTask: (id: number, data: Record<string, unknown>) =>
     api.put<Task>(`/tasks/${id}`, data),
@@ -96,7 +98,6 @@ export const tasksApi = {
     api.delete(`/tasks/${id}`),
 };
 
-// Financial API
 export const financialsApi = {
   getSummary: () =>
     api.get<FinancialSummary>('/financials/summary'),
@@ -106,7 +107,6 @@ export const financialsApi = {
     api.get<Task[]>('/financials/tasks'),
 };
 
-// Companies API
 export const companiesApi = {
   createWithAdmin: (data: { company: any; admin: any }) =>
     api.post<CompanyWithAdminResponse>('/companies/with-admin', data),

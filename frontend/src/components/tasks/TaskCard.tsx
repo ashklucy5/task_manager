@@ -1,19 +1,31 @@
 // src/components/tasks/TaskCard.tsx
 
 import { useState } from 'react';
-import type { Task } from '../../types';
+import type { Task, TaskStatus } from '../../types';  // ✅ Import TaskStatus
 import { formatDate } from '../../utils/formatDate';
 import Modal from '../ui/Modal';
 import TaskDetails from './TaskDetails';
 
 interface TaskCardProps {
   task: Task;
+  canEditStatus?: boolean;
+  canDeleteTask?: boolean;  // ✅ NEW: For delete functionality
   onViewDetails?: (task: Task) => void;
-  onStatusChange?: (taskId: number, status: string) => void;
+  // ✅ FIX: Change from string to TaskStatus
+  onStatusChange?: (taskId: number, status: TaskStatus) => void;
+  onDeleteTask?: (taskId: number) => void;  // ✅ NEW: For delete functionality
   showAssignee?: boolean;
 }
 
-const TaskCard = ({ task, onViewDetails, onStatusChange, showAssignee = true }: TaskCardProps) => {
+const TaskCard = ({
+  task,
+  canEditStatus = true,
+  canDeleteTask = false,
+  onViewDetails,
+  onStatusChange,
+  onDeleteTask,
+  showAssignee = true
+}: TaskCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const getPriorityColor = (priority: string) => {
@@ -26,7 +38,7 @@ const TaskCard = ({ task, onViewDetails, onStatusChange, showAssignee = true }: 
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: TaskStatus) => {  // ✅ Use TaskStatus type
     switch (status) {
       case 'COMPLETED': return 'bg-green-100 text-green-700';
       case 'IN_PROGRESS': return 'bg-blue-100 text-blue-700';
@@ -45,17 +57,27 @@ const TaskCard = ({ task, onViewDetails, onStatusChange, showAssignee = true }: 
     }
   };
 
-  // ✅ FIXED: Use onStatusChange prop in TaskDetails
-  const handleStatusChange = (taskId: number, newStatus: string) => {
-    if (onStatusChange) {
+  const handleStatusChange = (taskId: number, newStatus: TaskStatus) => {  // ✅ Use TaskStatus
+    if (onStatusChange && canEditStatus) {
       onStatusChange(taskId, newStatus);
       setShowDetails(false);
     }
   };
 
+  // ✅ NEW: Delete handler
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();  // Prevent opening details modal
+    if (onDeleteTask && canDeleteTask) {
+      onDeleteTask(task.id);
+    }
+  };
+
   return (
     <>
-      <div className="bg-white border border-gray-100 rounded-xl p-4 mb-4 hover:shadow-lg transition-shadow cursor-pointer" onClick={handleViewDetails}>
+      <div
+        className="bg-white border border-gray-100 rounded-xl p-4 mb-4 hover:shadow-lg transition-shadow cursor-pointer"
+        onClick={handleViewDetails}
+      >
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-bold text-lg text-gray-900 truncate flex-1">{task.title}</h3>
@@ -111,9 +133,27 @@ const TaskCard = ({ task, onViewDetails, onStatusChange, showAssignee = true }: 
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(task.status)}`}>
             {task.status.replace('_', ' ')}
           </span>
-          <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-            View Details →
-          </button>
+          <div className="flex items-center space-x-2">
+            {canEditStatus ? (
+              <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                View/Edit →
+              </button>
+            ) : (
+              <button className="text-gray-400 text-sm font-medium cursor-not-allowed">
+                View Only →
+              </button>
+            )}
+            {/* ✅ Delete Button (Admin/SuperAdmin only) */}
+            {canDeleteTask && (
+              <button
+                onClick={handleDelete}
+                className="text-red-600 hover:text-red-700 text-sm"
+                title="Delete task"
+              >
+                🗑️
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -124,9 +164,10 @@ const TaskCard = ({ task, onViewDetails, onStatusChange, showAssignee = true }: 
           onClose={() => setShowDetails(false)}
           title="Task Details"
         >
-          <TaskDetails 
-            task={task} 
-            onClose={() => setShowDetails(false)} 
+          <TaskDetails
+            task={task}
+            canEditStatus={canEditStatus}
+            onClose={() => setShowDetails(false)}
             onStatusChange={handleStatusChange}
           />
         </Modal>

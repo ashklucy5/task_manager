@@ -19,12 +19,21 @@ import AdminFinancials from './pages/admin/Financials';
 import AdminSettings from './pages/admin/Settings';
 import CreateCompanyPage from './pages/CreateCompany';
 import UserManagement from './pages/admin/UserManagement';
+import UserProfile from './pages/UserProfile';
 
 export const router = createBrowserRouter([
   // Public routes
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
   { path: '/companies/new', element: <CreateCompanyPage /> },
+  {
+  path: '/profile',
+  element: (
+    <ProtectedRoute>
+      <UserProfile />
+    </ProtectedRoute>
+  ),
+},
   
   // Main app layout (protected)
   {

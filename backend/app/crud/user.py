@@ -100,21 +100,27 @@ def create_user(db: Session, user: UserCreate) -> User:
 
 
 def update_user(db: Session, user_id: str, user_update: UserUpdate) -> Optional[User]:
-    """Update user"""
+    """Update user - ONLY update fields that are not None"""
     db_user = get_user(db, user_id)
     if not db_user:
         return None
     
-    update_data = user_update.model_dump(exclude_unset=True)
+    # ✅ Use exclude_unset=True AND exclude_none=True to skip null values
+    update_data = user_update.model_dump(exclude_unset=True, exclude_none=True)
     
+    # ✅ Manually handle password hashing if provided
     if "password" in update_data and update_data["password"]:
         update_data["hashed_password"] = get_password_hash(update_data.pop("password"))
     
-    if "parent_id" in update_data:
-        del update_data["parent_id"]
+    # ✅ NEVER allow updating these fields via profile update
+    protected_fields = ["id", "role", "company_id", "parent_id", "email", "username", "hashed_password"]
+    for field in protected_fields:
+        update_data.pop(field, None)
     
+    # ✅ Only update fields that have values
     for field, value in update_data.items():
-        setattr(db_user, field, value)
+        if value is not None:  # Double-check
+            setattr(db_user, field, value)
     
     db.commit()
     db.refresh(db_user)

@@ -14,81 +14,91 @@ const TasksPage = () => {
   const canAssign = user && canAssignTasks(user.role);
 
   const handleTaskUpdate = () => {
-    // Refresh task list after update
     console.log('Task updated');
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-slide-up">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Tasks</h1>
-          <p className="text-gray-500 mt-1">Manage and track all tasks</p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Tasks</h1>
+          <p className="text-gray-500 text-lg">Manage and track all tasks</p>
         </div>
         {canAssign && (
-          <Button onClick={() => setShowAssignModal(true)} variant="primary">
-            + Assign Task
+          <Button 
+            onClick={() => setShowAssignModal(true)} 
+            variant="primary"
+            className="btn-modern"
+          >
+            <span className="text-xl mr-2">+</span>
+            Assign Task
           </Button>
         )}
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex space-x-2 border-b border-gray-200">
-        <button
-          onClick={() => setFilter('all')}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            filter === 'all'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          All Tasks
-        </button>
-        <button
-          onClick={() => setFilter('my-tasks')}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            filter === 'my-tasks'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          My Tasks
-        </button>
-        <button
-          onClick={() => setFilter('pending')}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            filter === 'pending'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          Pending
-        </button>
-        <button
-          onClick={() => setFilter('completed')}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            filter === 'completed'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          Completed
-        </button>
-        <button
-          onClick={() => setFilter('overdue')}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            filter === 'overdue'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          Overdue
-        </button>
+      <div className="glass-panel p-2 rounded-xl">
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setFilter('all')}
+            className={`px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 ${
+              filter === 'all'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg'
+                : 'text-gray-600 hover:bg-white/50'
+            }`}
+          >
+            All Tasks
+          </button>
+          <button
+            onClick={() => setFilter('my-tasks')}
+            className={`px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 ${
+              filter === 'my-tasks'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg'
+                : 'text-gray-600 hover:bg-white/50'
+            }`}
+          >
+            My Tasks
+          </button>
+          <button
+            onClick={() => setFilter('pending')}
+            className={`px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 ${
+              filter === 'pending'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg'
+                : 'text-gray-600 hover:bg-white/50'
+            }`}
+          >
+            Pending
+          </button>
+          <button
+            onClick={() => setFilter('completed')}
+            className={`px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 ${
+              filter === 'completed'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg'
+                : 'text-gray-600 hover:bg-white/50'
+            }`}
+          >
+            Completed
+          </button>
+          <button
+            onClick={() => setFilter('overdue')}
+            className={`px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 ${
+              filter === 'overdue'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg'
+                : 'text-gray-600 hover:bg-white/50'
+            }`}
+          >
+            Overdue
+          </button>
+        </div>
       </div>
 
       {/* Task List */}
-      <TaskList filter={filter} showAssignee={filter !== 'my-tasks'} onTaskUpdate={handleTaskUpdate} />
+      <TaskList 
+        filter={filter} 
+        showAssignee={filter !== 'my-tasks'} 
+        onTaskUpdate={handleTaskUpdate} 
+      />
 
       {/* Assign Task Modal */}
       <AssignTaskModal

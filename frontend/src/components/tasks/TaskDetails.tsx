@@ -1,20 +1,27 @@
 // src/components/tasks/TaskDetails.tsx
 
-// import { useState } from 'react';
-import type { Task } from '../../types';
+import { useState } from 'react';
+import type { Task, TaskStatus } from '../../types';  // ✅ Added TaskStatus
 import { formatDate, formatCurrency } from '../../utils/formatDate';
 import Button from '../ui/Button';
 
 interface TaskDetailsProps {
   task: Task;
+  canEditStatus?: boolean;
   onClose: () => void;
-  onStatusChange?: (taskId: number, status: string) => void;
+  onStatusChange?: (taskId: number, status: TaskStatus) => void;  // ✅ Type parameter
 }
 
-const TaskDetails = ({ task, onClose, onStatusChange }: TaskDetailsProps) => {
-  // ✅ FIXED: Removed unused isEditing state
+const TaskDetails = ({ 
+  task, 
+  canEditStatus = true,
+  onClose, 
+  onStatusChange 
+}: TaskDetailsProps) => {
+  // ✅ FIX: Type localStatus as TaskStatus
+  const [localStatus, setLocalStatus] = useState<TaskStatus>(task.status);
 
-  const statusOptions = [
+  const statusOptions: { value: TaskStatus; label: string }[] = [  // ✅ Typed options
     { value: 'PENDING', label: 'Pending' },
     { value: 'IN_PROGRESS', label: 'In Progress' },
     { value: 'COMPLETED', label: 'Completed' },
@@ -23,9 +30,23 @@ const TaskDetails = ({ task, onClose, onStatusChange }: TaskDetailsProps) => {
     { value: 'CANCELLED', label: 'Cancelled' },
   ];
 
-  const handleStatusChange = (newStatus: string) => {
-    if (onStatusChange) {
+  const handleStatusChange = (newStatus: TaskStatus) => {  // ✅ Type parameter
+    // Optimistic local update
+    setLocalStatus(newStatus);
+    
+    if (onStatusChange && canEditStatus) {
       onStatusChange(task.id, newStatus);
+    }
+  };
+
+  const getStatusColor = (status: TaskStatus) => {  // ✅ Type parameter
+    switch (status) {
+      case 'COMPLETED': return 'bg-green-100 text-green-700';
+      case 'IN_PROGRESS': return 'bg-blue-100 text-blue-700';
+      case 'OVERDUE': return 'bg-red-100 text-red-700';
+      case 'ON_HOLD': return 'bg-gray-100 text-gray-700';
+      case 'CANCELLED': return 'bg-gray-100 text-gray-700';
+      default: return 'bg-yellow-100 text-yellow-700';
     }
   };
 
@@ -44,13 +65,8 @@ const TaskDetails = ({ task, onClose, onStatusChange }: TaskDetailsProps) => {
           }`}>
             {task.priority}
           </span>
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-            task.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
-            task.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-700' :
-            task.status === 'OVERDUE' ? 'bg-red-100 text-red-700' :
-            'bg-yellow-100 text-yellow-700'
-          }`}>
-            {task.status.replace('_', ' ')}
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(localStatus)}`}>
+            {localStatus.replace('_', ' ')}
           </span>
         </div>
       </div>
@@ -83,6 +99,7 @@ const TaskDetails = ({ task, onClose, onStatusChange }: TaskDetailsProps) => {
                   checked={item.completed || false}
                   className="w-4 h-4 text-blue-600 rounded"
                   readOnly
+                  disabled
                 />
                 <span className={`text-sm ${item.completed ? 'line-through text-gray-400' : 'text-gray-700'}`}>
                   {item.text}
@@ -123,7 +140,7 @@ const TaskDetails = ({ task, onClose, onStatusChange }: TaskDetailsProps) => {
         </div>
       )}
 
-      {/* Financial Info (Owner-only) */}
+      {/* Financial Info */}
       {task.payment_amount !== undefined && (
         <div>
           <h3 className="text-sm font-medium text-gray-700 mb-2">Payment</h3>
@@ -149,20 +166,28 @@ const TaskDetails = ({ task, onClose, onStatusChange }: TaskDetailsProps) => {
       </div>
 
       {/* Status Update */}
-      <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-2">Update Status</h3>
-        <select
-          value={task.status}
-          onChange={(e) => handleStatusChange(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        >
-          {statusOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      {canEditStatus ? (
+        <div>
+          <h3 className="text-sm font-medium text-gray-700 mb-2">Update Status</h3>
+          <select
+            value={localStatus}
+            onChange={(e) => handleStatusChange(e.target.value as TaskStatus)}  // ✅ Type assertion
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            {statusOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-gray-400 mt-1">Changes apply instantly</p>
+        </div>
+      ) : (
+        <div>
+          <h3 className="text-sm font-medium text-gray-700 mb-2">Status</h3>
+          <p className="text-gray-500 text-sm">You don't have permission to update this task's status</p>
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex space-x-3 pt-4 border-t">

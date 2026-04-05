@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../services/api';
-import Button from '../components/ui/Button';
+// import Button from '../components/ui/Button';
 
 const RegisterMinimal = () => {
   const navigate = useNavigate();
@@ -21,10 +21,7 @@ const RegisterMinimal = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
-    // Auto-uppercase specific fields
     const uppercaseFields = ['company_code', 'position', 'parent_id'];
-    
     setFormData(prev => ({
       ...prev,
       [name]: uppercaseFields.includes(name) ? value.toUpperCase() : value
@@ -85,11 +82,7 @@ const RegisterMinimal = () => {
       localStorage.setItem('access_token', response.data.access_token);
       
       setSuccess('✅ Registration successful! Redirecting...');
-      
-      // Redirect after short delay
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1500);
+      setTimeout(() => navigate('/dashboard'), 1500);
       
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed');
@@ -99,176 +92,165 @@ const RegisterMinimal = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        {/* Header */}
-        <div>
-          <div className="flex justify-center">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">N</span>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-purple-50">
+      {/* Compact Glass Card - 25% larger */}
+      <div className="glass-card w-full max-w-2xl p-8 animate-scale-in">
+        {/* Header - Compact but larger */}
+        <div className="text-center mb-5">
+          <div className="flex items-center justify-center gap-3 mb-2.5">
+            <div className="w-10 h-10 glass-card rounded-xl flex items-center justify-center">
+              <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-700">N</span>
             </div>
+            <h1 className="text-2xl font-bold text-gray-800">Join Company</h1>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Join Your Company
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Register as a team member
-          </p>
+          <p className="text-sm text-gray-500">Register as team member</p>
         </div>
 
-        {/* Alerts */}
+        {/* Alerts - Compact but larger */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
-            <strong>Error:</strong> {error}
+          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-2.5 rounded-lg mb-4 text-sm flex items-center gap-2">
+            <span>⚠️</span>
+            <span>{error}</span>
           </div>
         )}
         {success && (
-          <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg">
-            {success}
+          <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-2.5 rounded-lg mb-4 text-sm flex items-center gap-2">
+            <span>✅</span>
+            <span>{success}</span>
           </div>
         )}
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Company Code */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Company Code *
-            </label>
-            <input
-              name="company_code"
-              value={formData.company_code}
-              onChange={handleChange}
-              required
-              disabled={loading || !!success}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
-              placeholder="e.g., CA1"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Format: CA followed by number
-            </p>
+        {/* Form - Compact Grid with 25% more spacing */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Row 1: Company Code + Admin ID */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Company Code *</label>
+              <input
+                name="company_code"
+                value={formData.company_code}
+                onChange={handleChange}
+                required
+                disabled={loading || !!success}
+                className="input-modern w-full text-sm py-2.5 px-4 uppercase"
+                placeholder="CA1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Admin ID *</label>
+              <input
+                name="parent_id"
+                value={formData.parent_id}
+                onChange={handleChange}
+                required
+                disabled={loading || !!success}
+                className="input-modern w-full text-sm py-2.5 px-4 uppercase font-mono"
+                placeholder="CA1-S-000001"
+              />
+            </div>
           </div>
 
-          {/* Admin ID */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Admin ID *
-            </label>
-            <input
-              name="parent_id"
-              value={formData.parent_id}
-              onChange={handleChange}
-              required
-              disabled={loading || !!success}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase font-mono"
-              placeholder="e.g., CA1-S-000001"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Hierarchical ID of your supervisor
-            </p>
+          {/* Row 2: Email + Full Name */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email *</label>
+              <input
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                disabled={loading || !!success}
+                className="input-modern w-full text-sm py-2.5 px-4"
+                placeholder="you@company.com"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name *</label>
+              <input
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
+                required
+                disabled={loading || !!success}
+                className="input-modern w-full text-sm py-2.5 px-4"
+                placeholder="John Doe"
+              />
+            </div>
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email *
-            </label>
-            <input
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              disabled={loading || !!success}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="you@company.com"
-            />
+          {/* Row 3: Position + Password */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Position *</label>
+              <input
+                name="position"
+                value={formData.position}
+                onChange={handleChange}
+                required
+                disabled={loading || !!success}
+                className="input-modern w-full text-sm py-2.5 px-4 uppercase"
+                placeholder="DEVELOPER"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Password *</label>
+              <input
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                minLength={8}
+                disabled={loading || !!success}
+                className="input-modern w-full text-sm py-2.5 px-4"
+                placeholder="••••••••"
+              />
+            </div>
           </div>
 
-          {/* Full Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Full Name *
-            </label>
-            <input
-              name="full_name"
-              value={formData.full_name}
-              onChange={handleChange}
-              required
-              disabled={loading || !!success}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="John Doe"
-            />
-          </div>
+          {/* Password Requirements - Compact */}
+          <p className="text-xs text-gray-400 text-center -mt-1">
+            8+ chars, uppercase, lowercase, number
+          </p>
 
-          {/* Position */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Position *
-            </label>
-            <input
-              name="position"
-              value={formData.position}
-              onChange={handleChange}
-              required
-              disabled={loading || !!success}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
-              placeholder="e.g., DEVELOPER"
-            />
-          </div>
-
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password *
-            </label>
-            <input
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              minLength={8}
-              disabled={loading || !!success}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="••••••••"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              8+ chars, uppercase, lowercase, number
-            </p>
-          </div>
-
-          {/* Submit Button */}
-          <div>
-            <Button
-              type="submit"
-              isLoading={loading}
-              fullWidth
-              disabled={!!success}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white"
-            >
-              {loading ? 'Registering...' : success ? '✓ Success!' : 'Register as Member'}
-            </Button>
-          </div>
+          {/* Submit Button - Full Width, larger */}
+          <button
+            type="submit"
+            disabled={loading || !!success}
+            className="btn-modern w-full py-3 text-sm mt-3 disabled:opacity-50"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Registering...
+              </span>
+            ) : success ? '✓ Success!' : 'Register as Member'}
+          </button>
         </form>
 
-        {/* Footer */}
-        <div className="text-center">
+        {/* Footer - Compact but larger */}
+        <div className="mt-5 text-center">
           {success ? (
-            <p className="text-sm text-gray-500">
-              Redirecting to dashboard...
-            </p>
+            <p className="text-sm text-gray-500">Redirecting to dashboard...</p>
           ) : (
             <p className="text-sm text-gray-500">
-              Already have an account?{' '}
+              Have an account?{' '}
               <button
                 onClick={() => navigate('/login')}
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-blue-600 font-medium hover:underline"
               >
                 Sign in
               </button>
             </p>
           )}
+        </div>
+
+        {/* Help Tip - Minimal but larger */}
+        <div className="mt-4 p-3 bg-blue-50/30 rounded-lg border border-blue-100">
+          <p className="text-xs text-gray-500 text-center">
+            💡 Contact admin for company code & ID
+          </p>
         </div>
       </div>
     </div>

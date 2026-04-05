@@ -1,15 +1,16 @@
 // src/pages/admin/Tasks.tsx
 
-import TaskList from '../../components/tasks/TaskList';
+import { useState } from 'react';
+import TaskList from '../../components/tasks/TaskList';  // ✅ Default import of TaskList
 import AssignTaskModal from '../../components/tasks/AssignTaskModal';
 import Button from '../../components/ui/Button';
-import { useState } from 'react';
 
 const AdminTasks = () => {
   const [showAssignModal, setShowAssignModal] = useState(false);
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Task Management</h1>
@@ -20,8 +21,13 @@ const AdminTasks = () => {
         </Button>
       </div>
 
-      <TaskList filter="all" showAssignee={true} />
+      {/* ✅ TaskList receives these props - NOT TaskCard */}
+      <TaskList 
+        filter="all" 
+        showAssignee={true} 
+      />
 
+      {/* Assign Task Modal */}
       <AssignTaskModal
         isOpen={showAssignModal}
         onClose={() => setShowAssignModal(false)}

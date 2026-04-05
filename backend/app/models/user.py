@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Foreign
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
-
+from datetime import datetime, timezone, timedelta
 
 class User(Base):
     """User model with hierarchical ID structure"""
@@ -35,7 +35,13 @@ class User(Base):
     
     # Profile
     full_name = Column(String(255), nullable=False)
+    
+    # ✅ Manual status (set by user from profile)
     status = Column(String(50), nullable=False, default="ACTIVE")
+    
+    # ✅ NEW: Last seen timestamp for heartbeat detection
+    last_seen = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    
     avatar_url = Column(String(500), nullable=True)
     avatar_cloudinary_public_id = Column(String(255), nullable=True)
     avatar_cloudinary_url = Column(String(500), nullable=True)
@@ -61,6 +67,14 @@ class User(Base):
     parent = relationship("User", remote_side=[id], backref="subordinates")
     tasks_assigned = relationship("Task", foreign_keys="Task.assignee_id", back_populates="assignee")
     tasks_created = relationship("Task", foreign_keys="Task.assigned_by_id", back_populates="assigned_by")
+    
+    # ✅ NEW: Computed property for real-time online status
+    @property
+    def is_online(self) -> bool:
+        """Check if user is online (sent heartbeat in last 2 minutes)"""
+        if not self.last_seen:
+            return False
+        return (datetime.now(timezone.utc) - self.last_seen) < timedelta(minutes=2)
     
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, role={self.role})>"

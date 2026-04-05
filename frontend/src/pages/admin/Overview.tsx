@@ -9,6 +9,7 @@ import Skeleton from '../../components/ui/Skeleton';
 const AdminOverview = () => {
   const { user } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  const [financialSummary, setFinancialSummary] = useState<FinancialSummary | null>(null);
   const [stats, setStats] = useState({
     totalUsers: 0,
     activeUsers: 0,
@@ -30,7 +31,15 @@ const AdminOverview = () => {
     try {
       setLoading(true);
       
-      // Fetch all data in parallel
+      if (user?.role === 'super_admin') {
+        try {
+          const financialResponse = await financialsApi.getSummary();
+          setFinancialSummary(financialResponse.data);
+        } catch (error) {
+          console.error('Failed to fetch financial summary:', error);
+        }
+      }
+      
       const [usersResponse, tasksResponse] = await Promise.all([
         usersApi.getUsers({ company_id: user?.company_id }),
         tasksApi.getAllTasks(),
@@ -41,7 +50,6 @@ const AdminOverview = () => {
         (t: Task) => users.some((u: User) => u.id === t.assignee_id)
       );
       
-      // Calculate stats
       const activeUsers = users.filter(u => u.status === 'ACTIVE').length;
       const offlineUsers = users.filter(u => u.status === 'OFFLINE').length;
       const pendingTasks = tasks.filter(t => 
@@ -64,7 +72,6 @@ const AdminOverview = () => {
         completionRate,
       });
       
-      // Get recent tasks and users
       setRecentTasks(tasks.slice(0, 5));
       setRecentUsers(users.slice(0, 5));
     } catch (error) {
@@ -96,78 +103,99 @@ const AdminOverview = () => {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-32" />)}
+          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-40 rounded-3xl" />)}
         </div>
-        {[1, 2].map(i => <Skeleton key={i} className="h-64" />)}
+        {[1, 2].map(i => <Skeleton key={i} className="h-80 rounded-3xl" />)}
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Company Overview</h1>
-        <p className="text-gray-500 mt-1">
+      <div className="animate-slide-up">
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">Company Overview</h1>
+        <p className="text-gray-500 text-lg">
           Welcome back! Here's what's happening at {user?.company_code || 'your company'}
         </p>
       </div>
 
+      {/* Financial Summary Card */}
+      {user?.role === 'super_admin' && financialSummary && (
+        <div className="card-modern card-gradient animate-slide-up">
+          <h2 className="text-xl font-semibold mb-6">💰 Financial Summary</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <p className="text-sm opacity-80">Total Payment</p>
+              <p className="text-3xl font-bold">{financialSummary.total_payment_usd}</p>
+            </div>
+            <div>
+              <p className="text-sm opacity-80">Completion Rate</p>
+              <p className="text-3xl font-bold">{financialSummary.completion_rate}%</p>
+            </div>
+            <div>
+              <p className="text-sm opacity-80">Active Users</p>
+              <p className="text-3xl font-bold">{financialSummary.active_users}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Users */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div className="card-modern animate-slide-up">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Users</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{stats.totalUsers}</p>
+              <p className="text-sm text-gray-500 font-medium">Total Users</p>
+              <p className="text-4xl font-bold text-gray-800 mt-2">{stats.totalUsers}</p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-2xl">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center text-3xl">
               👥
             </div>
           </div>
-          <div className="mt-4 flex items-center text-sm">
-            <span className="text-green-600 font-medium">{stats.activeUsers} active</span>
-            <span className="text-gray-400 mx-2">•</span>
+          <div className="mt-6 flex items-center text-sm gap-2">
+            <span className="px-3 py-1.5 rounded-full bg-green-100 text-green-700 font-medium">{stats.activeUsers} active</span>
+            <span className="text-gray-400">•</span>
             <span className="text-gray-500">{stats.offlineUsers} offline</span>
           </div>
         </div>
 
         {/* Total Tasks */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div className="card-modern animate-slide-up" style={{ animationDelay: '0.1s' }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Tasks</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{stats.totalTasks}</p>
+              <p className="text-sm text-gray-500 font-medium">Total Tasks</p>
+              <p className="text-4xl font-bold text-gray-800 mt-2">{stats.totalTasks}</p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-2xl">
+            <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center text-3xl">
               ✅
             </div>
           </div>
-          <div className="mt-4 flex items-center text-sm">
-            <span className="text-blue-600 font-medium">{stats.pendingTasks} pending</span>
-            <span className="text-gray-400 mx-2">•</span>
+          <div className="mt-6 flex items-center text-sm gap-2">
+            <span className="px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 font-medium">{stats.pendingTasks} pending</span>
+            <span className="text-gray-400">•</span>
             <span className="text-gray-500">{stats.completedTasks} completed</span>
           </div>
         </div>
 
         {/* Completion Rate */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div className="card-modern animate-slide-up" style={{ animationDelay: '0.2s' }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Completion Rate</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{stats.completionRate}%</p>
+              <p className="text-sm text-gray-500 font-medium">Completion Rate</p>
+              <p className="text-4xl font-bold text-gray-800 mt-2">{stats.completionRate}%</p>
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-2xl">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center text-3xl">
               📈
             </div>
           </div>
-          <div className="mt-4">
-            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div className="mt-6">
+            <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-purple-500 rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full transition-all duration-1000"
                 style={{ width: `${stats.completionRate}%` }}
               />
             </div>
@@ -175,21 +203,21 @@ const AdminOverview = () => {
         </div>
 
         {/* Overdue Tasks */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div className="card-modern animate-slide-up" style={{ animationDelay: '0.3s' }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Overdue Tasks</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{stats.overdueTasks}</p>
+              <p className="text-sm text-gray-500 font-medium">Overdue Tasks</p>
+              <p className="text-4xl font-bold text-gray-800 mt-2">{stats.overdueTasks}</p>
             </div>
-            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-2xl">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center text-3xl">
               ⚠️
             </div>
           </div>
-          <div className="mt-4 text-sm text-gray-500">
+          <div className="mt-6 text-sm">
             {stats.overdueTasks > 0 ? (
-              <span className="text-orange-600 font-medium">Needs attention</span>
+              <span className="px-3 py-1.5 rounded-full bg-orange-100 text-orange-700 font-medium">Needs attention</span>
             ) : (
-              <span className="text-green-600 font-medium">All on track</span>
+              <span className="px-3 py-1.5 rounded-full bg-green-100 text-green-700 font-medium">All on track</span>
             )}
           </div>
         </div>
@@ -198,23 +226,23 @@ const AdminOverview = () => {
       {/* Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Tasks */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Tasks</h2>
+        <div className="card-modern animate-slide-up">
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">Recent Tasks</h2>
           {recentTasks.length > 0 ? (
             <div className="space-y-3">
               {recentTasks.map(task => (
-                <div key={task.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={task.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{task.title}</p>
+                    <p className="text-sm font-semibold text-gray-800 truncate">{task.title}</p>
                     <p className="text-xs text-gray-500 mt-1">
-                      {new Date(task.due_date).toLocaleDateString()}
+                      Due: {new Date(task.due_date).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${getPriorityColor(task.priority)}`}>
                       {task.priority}
                     </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(task.status)}`}>
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${getStatusColor(task.status)}`}>
                       {task.status.replace('_', ' ')}
                     </span>
                   </div>
@@ -222,32 +250,40 @@ const AdminOverview = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-sm">No tasks yet</p>
+            <p className="text-gray-500 text-sm text-center py-8">No tasks yet</p>
           )}
         </div>
 
         {/* Recent Users */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Team Members</h2>
+        <div className="card-modern animate-slide-up">
+          <h2 className="text-xl font-semibold text-gray-800 mb-6">Team Members</h2>
           {recentUsers.length > 0 ? (
             <div className="space-y-3">
-              {recentUsers.map(user => (
-                <div key={user.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
-                    {user.full_name.charAt(0)}
+              {recentUsers.map(u => (
+                <div key={u.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                  <div className="w-12 h-12 glass-card rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                    {u.avatar_url ? (
+                      <img
+                        src={u.avatar_url}
+                        alt={u.full_name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      u.full_name.charAt(0)
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{user.full_name}</p>
-                    <p className="text-xs text-gray-500 truncate">{user.position || user.role}</p>
+                    <p className="text-sm font-semibold text-gray-800 truncate">{u.full_name}</p>
+                    <p className="text-xs text-gray-500 truncate">{u.position || u.role}</p>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(user.status)}`}>
-                    {user.status}
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${getStatusColor(u.status)}`}>
+                    {u.status}
                   </span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-sm">No team members yet</p>
+            <p className="text-gray-500 text-sm text-center py-8">No team members yet</p>
           )}
         </div>
       </div>

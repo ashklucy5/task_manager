@@ -1,7 +1,7 @@
 """
 Task Model
 """
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, ForeignKey, Numeric
+from sqlalchemy import JSON, Column, Integer, String, DateTime, Boolean, Text, ForeignKey, Numeric
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -38,7 +38,7 @@ class Task(Base):
     image_filename = Column(String(255), nullable=True)
     image_cloudinary_public_id = Column(String(255), nullable=True)
     image_cloudinary_url = Column(String(500), nullable=True)
-    
+    image_urls = Column(JSON, nullable=True)
     # Financial
     payment_amount = Column(Integer, nullable=True)
     is_paid = Column(Boolean, default=False)

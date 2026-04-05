@@ -133,7 +133,6 @@ const AdminUsers = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User ID</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Position</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
@@ -147,55 +146,64 @@ const AdminUsers = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredUsers.map((u) => (
                 <tr key={u.id} className="hover:bg-gray-50">
-                  {/* ✅ ADDED: User ID Column */}
-                  <td className="px-6 py-4">
-                    <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">
-                      {u.id}
-                    </span>
-                  </td>
-                  
+                  {/* ✅ User with Avatar */}
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
-                        {u.full_name.charAt(0)}
-                      </div>
+                      {/* ✅ Avatar with fallback to initial */}
+                      {u.avatar_url ? (
+                        <img
+                          src={u.avatar_url}
+                          alt={u.full_name}
+                          className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
+                          {u.full_name.charAt(0)}
+                        </div>
+                      )}
                       <div>
                         <p className="font-medium text-gray-900">{u.full_name}</p>
                         <p className="text-sm text-gray-500">{u.email}</p>
                       </div>
                     </div>
                   </td>
+                  
                   <td className="px-6 py-4 text-sm text-gray-900">{u.position || '-'}</td>
+                  
                   <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadgeColor(u.role)}`}>
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${getRoleBadgeColor(u.role)}`}>
                       {u.role.replace('_', ' ').toUpperCase()}
                     </span>
                   </td>
+                  
                   <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(u.status)}`}>
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(u.status)}`}>
                       {u.status}
                     </span>
                   </td>
+                  
                   <td className="px-6 py-4 text-sm text-gray-900">
-                    <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">
+                    <span className="font-mono text-xs bg-gray-100 px-2.5 py-1 rounded">
                       {u.company_code || '-'}
                     </span>
                   </td>
-                  {/* ✅ FIXED: Show full parent_id or dash */}
+                  
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {u.parent_id ? (
-                      <span className="font-mono text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded" title={u.parent_id}>
+                      <span className="font-mono text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded" title={u.parent_id}>
                         {u.parent_id}
                       </span>
                     ) : (
                       <span className="text-gray-400 text-xs">-</span>
                     )}
                   </td>
+                  
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {new Date(u.created_at).toLocaleDateString()}
                   </td>
+                  
                   <td className="px-6 py-4 text-right">
-                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors">
                       Edit
                     </button>
                   </td>

@@ -14,17 +14,23 @@ const AdminPanel = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  const [stats, setStats] = useState({
-    totalUsers: 0,
-    activeUsers: 0,
-    totalTasks: 0,
-    pendingTasks: 0,
-    completionRate: 0,
+  const [stats, setStats] = useState<FinancialSummary>({
+    total_users: 0,
+    active_users: 0,
+    total_tasks: 0,
+    completed_tasks: 0,
+    completion_rate: 0,
+    total_payment_cents: 0,
+    total_payment_usd: '$0.00',
   });
+  
+  const [users, setUsers] = useState<User[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
   const isSuperAdmin = user && canViewFinancials(user.role);
   const isAdmin = user && canManageUsers(user.role);
+  const canAssign = user && canAssignTasks(user.role);
 
   useEffect(() => {
     if (user) {
@@ -36,33 +42,37 @@ const AdminPanel = () => {
     try {
       setLoading(true);
       
-      // Fetch users for this company
+      if (isSuperAdmin) {
+        const response = await financialsApi.getSummary();
+        setStats(response.data);
+      }
+      
       const usersResponse = await usersApi.getUsers({ company_id: user?.company_id });
-      const users = usersResponse.data;
+      const fetchedUsers: User[] = usersResponse.data;
+      setUsers(fetchedUsers);
       
-      // Fetch tasks for this company
       const tasksResponse = await tasksApi.getAllTasks();
-      const tasks = tasksResponse.data.filter(
-        t => users.some(u => u.id === t.assignee_id)
+      const fetchedTasks: Task[] = tasksResponse.data.filter(
+        (t: Task) => fetchedUsers.some((u: User) => u.id === t.assignee_id)
       );
+      setTasks(fetchedTasks);
       
-      // Calculate stats
-      const activeUsers = users.filter(u => u.status === 'ACTIVE').length;
-      const pendingTasks = tasks.filter(t => 
-        t.status === 'PENDING' || t.status === 'IN_PROGRESS'
-      ).length;
-      const completedTasks = tasks.filter(t => t.status === 'COMPLETED').length;
-      const completionRate = tasks.length > 0 
-        ? Math.round((completedTasks / tasks.length) * 100) 
+      const activeUsers = fetchedUsers.filter((u: User) => u.status === 'ACTIVE').length;
+      const completedTasks = fetchedTasks.filter((t: Task) => t.status === 'COMPLETED').length;
+      const completionRate = fetchedTasks.length > 0 
+        ? Math.round((completedTasks / fetchedTasks.length) * 100) 
         : 0;
       
-      setStats({
-        totalUsers: users.length,
-        activeUsers,
-        totalTasks: tasks.length,
-        pendingTasks,
-        completionRate,
-      });
+      if (!isSuperAdmin) {
+        setStats(prev => ({
+          ...prev,
+          total_users: fetchedUsers.length,
+          active_users: activeUsers,
+          total_tasks: fetchedTasks.length,
+          completed_tasks: completedTasks,
+          completion_rate: completionRate,
+        }));
+      }
     } catch (error) {
       console.error('Failed to fetch stats:', error);
     } finally {
@@ -78,7 +88,7 @@ const AdminPanel = () => {
   const menuItems = [
     { path: '/admin', label: 'Overview', icon: '📊' },
     ...(isAdmin ? [{ path: '/admin/users', label: 'Users', icon: '👥' }] : []),
-    ...(isAdmin ? [{ path: '/admin/tasks', label: 'Tasks', icon: '✅' }] : []),
+    ...(canAssign ? [{ path: '/admin/tasks', label: 'Tasks', icon: '✅' }] : []),
     ...(isSuperAdmin ? [{ path: '/admin/financials', label: 'Financials', icon: '💰' }] : []),
     ...(isSuperAdmin ? [{ path: '/admin/settings', label: 'Settings', icon: '⚙️' }] : []),
   ];
@@ -91,7 +101,7 @@ const AdminPanel = () => {
   };
 
   if (!user) {
-    return null; // Will redirect via ProtectedRoute
+    return null;
   }
 
   return (
@@ -118,6 +128,45 @@ const AdminPanel = () => {
           <p className="text-xs text-gray-500 mt-1">ID: {user.company_id}</p>
         </div>
 
+        {/* Quick Stats */}
+        {!loading && (
+          <div className="p-4 bg-gray-50 border-b border-gray-100">
+            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Quick Stats</p>
+            <div className="space-y-1 text-xs">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Total Users:</span>
+                <span className="font-medium">{users.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Active:</span>
+                <span className="font-medium text-green-600">
+                  {users.filter(u => u.status === 'ACTIVE').length}
+                </span>
+              </div>
+              <div className="flex justify-between pt-2 border-t border-gray-200">
+                <span className="text-gray-500">Total Tasks:</span>
+                <span className="font-medium">{tasks.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Completed:</span>
+                <span className="font-medium text-green-600">
+                  {tasks.filter(t => t.status === 'COMPLETED').length}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Completion:</span>
+                <span className="font-medium">{stats.completion_rate}%</span>
+              </div>
+              {isSuperAdmin && (
+                <div className="flex justify-between pt-2 border-t border-gray-200 mt-1">
+                  <span className="text-gray-500">Payments:</span>
+                  <span className="font-medium text-green-600">{stats.total_payment_usd}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-1">
           {menuItems.map((item) => (
@@ -136,12 +185,21 @@ const AdminPanel = () => {
           ))}
         </nav>
 
-        {/* User Info */}
+        {/* User Info - ✅ FIXED: Show avatar if available */}
         <div className="p-4 border-t border-gray-100">
           <div className="flex items-center space-x-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
-              {user.full_name.charAt(0)}
-            </div>
+            {/* ✅ Avatar with fallback */}
+            {user.avatar_url ? (
+              <img
+                src={user.avatar_url}
+                alt={user.full_name}
+                className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
+                {user.full_name.charAt(0)}
+              </div>
+            )}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 truncate">{user.full_name}</p>
               <p className="text-xs text-gray-500 truncate">{user.position || user.role}</p>
