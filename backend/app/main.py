@@ -100,15 +100,19 @@ app = FastAPI(
     openapi_url="/openapi.json" if settings.DEBUG else None,
 )
 
+origins = [
+    "http://localhost:5173",  # Local development
+    "http://localhost:3000",  # Alternative local port
+    "https://task-manager-rho-six-58.vercel.app",  # ✅ Your Vercel domain from screenshot
+    "https://*.vercel.app",  # All Vercel preview deployments
+]
+if settings.FRONTEND_URL and settings.FRONTEND_URL not in origins:
+    origins.append(settings.FRONTEND_URL)
+
 # ✅ CORS Middleware - MUST BE BEFORE ROUTERS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "https://task-manager-rho-six-58.vercel.app"
-        "*",
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
