@@ -103,8 +103,8 @@ app = FastAPI(
 origins = [
     "http://localhost:5173",  # Local development
     "http://localhost:3000",  # Alternative local port
-    "https://task-manager-rho-six-58.vercel.app",  # ✅ Your Vercel domain from screenshot,  # All Vercel preview deployments
-]
+    "https://task-manager-rho-six-58.vercel.app",]  # ✅ Your Vercel domain from screenshot,  # All Vercel preview deployments
+
 if settings.FRONTEND_URL and settings.FRONTEND_URL not in origins:
     origins.append(settings.FRONTEND_URL)
 
