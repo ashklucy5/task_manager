@@ -35,5 +35,8 @@ jobs:
             cd /home/alltradebd/backend
             pip install -r requirements.txt
             alembic upgrade head
+            pkill -f "uvicorn app.main:app" || true
+            sleep 2
+            ./start.sh
             mkdir -p tmp
             touch tmp/restart.txt
