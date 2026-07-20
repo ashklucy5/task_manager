@@ -6,9 +6,10 @@ from sqlalchemy import engine_from_config, pool
 from alembic import context
 import sys
 import os
-
+from dotenv import load_dotenv
 # ✅ Add project to Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
 
 # ✅ Import your Base and ALL models
 from app.database import Base
@@ -21,6 +22,10 @@ from app.models.audit_log import AuditLog  # noqa
 
 # this is the Alembic Config object
 config = context.config
+
+db_url = os.getenv("DATABASE_URL")
+if db_url:
+    config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
 if config.config_file_name is not None:
