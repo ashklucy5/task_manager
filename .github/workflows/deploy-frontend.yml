@@ -1,0 +1,36 @@
+name: Deploy Frontend to cPanel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & build frontend
+        working-directory: ./frontend
+        env:
+          VITE_API_BASE_URL: https://alltradebd.com/api
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy build to taskmanager subdomain
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: frontend/dist/
+          remote_path: /home/alltradebd/taskmanager_html/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: ${{ secrets.SSH_PORT }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
