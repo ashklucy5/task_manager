@@ -78,6 +78,7 @@ ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:4173",
     "https://task-manager-rho-six-58.vercel.app",
+    "https://taskmanager.alltradebd.com"
 ]
 
 def _is_allowed_origin(origin: str) -> bool:
