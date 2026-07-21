@@ -30,13 +30,16 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          command_timeout: 60s
           script: |
             source /home/alltradebd/virtualenv/backend/3.12/bin/activate
             cd /home/alltradebd/backend
             pip install -r requirements.txt
-            alembic upgrade head
             pkill -f "uvicorn app.main:app" || true
             sleep 2
-            ./start.sh
+            chmod +x start.sh
+            nohup ./start.sh > /tmp/start_output.log 2>&1 &
+            sleep 8
+            cat /tmp/start_output.log
             mkdir -p tmp
             touch tmp/restart.txt
