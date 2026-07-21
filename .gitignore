@@ -1,0 +1,3 @@
+local_data_backup.sql
+local_schema.sql
+supabase_schema.sql

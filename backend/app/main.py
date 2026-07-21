@@ -208,12 +208,12 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 # ==================== ROUTERS ====================
 
-app.include_router(auth_router,       prefix="/api/auth",       tags=["Authentication"])
-app.include_router(users_router,      prefix="/api/users",      tags=["Users"])
-app.include_router(tasks_router,      prefix="/api/tasks",      tags=["Tasks"])
-app.include_router(financials_router, prefix="/api/financials", tags=["Financials"])
-app.include_router(analytics_router,  prefix="/api/analytics",  tags=["Analytics"])
-app.include_router(companies_router,  prefix="/api/companies",  tags=["Companies"])
+app.include_router(auth_router,       prefix="/auth",       tags=["Authentication"])
+app.include_router(users_router,      prefix="/users",      tags=["Users"])
+app.include_router(tasks_router,      prefix="/tasks",      tags=["Tasks"])
+app.include_router(financials_router, prefix="/financials", tags=["Financials"])
+app.include_router(analytics_router,  prefix="/analytics",  tags=["Analytics"])
+app.include_router(companies_router,  prefix="/companies",  tags=["Companies"])
 
 
 # ==================== HEALTH / ROOT ====================
