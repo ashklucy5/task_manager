@@ -11,6 +11,7 @@ alembic upgrade head
 
 echo "🌐 Starting FastAPI server..."
 mkdir -p logs
-nohup uvicorn app.main:app --host 127.0.0.1 --port 8001 >> logs/uvicorn.log 2>&1 < /dev/null &
+setsid nohup uvicorn app.main:app --host 127.0.0.1 --port 8001 >> logs/uvicorn.log 2>&1 < /dev/null &
 echo $! > uvicorn.pid
-echo "✅ Started with PID $(cat uvicorn.pid)"
+disown
+echo "✅ Started (detached), PID $(cat uvicorn.pid)"
