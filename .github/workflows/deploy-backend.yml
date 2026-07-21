@@ -27,28 +27,17 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          command_timeout: 90s
+          command_timeout: 300s
           script: |
             echo "MARKER-1: session started"
             source /home/alltradebd/virtualenv/backend/3.12/bin/activate
             echo "MARKER-2: venv activated"
             cd /home/alltradebd/backend
             echo "MARKER-3: cd done"
-            pip install -r requirements.txt
+            pip install -r requirements.txt --disable-pip-version-check --quiet
             echo "MARKER-4: pip install done"
-            timeout 10 pkill -f "uvicorn app.main:app"
-            echo "MARKER-5: pkill exit code $?"
-            sleep 2
-            echo "MARKER-6: sleep done"
-            chmod +x start.sh
-            echo "MARKER-7: chmod done"
-            timeout 20 nohup ./start.sh < /dev/null > /tmp/start_output.log 2>&1 &
-            BGPID=$!
-            echo "MARKER-8: backgrounded start.sh with PID $BGPID"
-            sleep 8
-            echo "MARKER-9: sleep after background done"
-            cat /tmp/start_output.log
-            echo "MARKER-10: cat done"
+            alembic upgrade head
+            echo "MARKER-5: migrations done"
             mkdir -p tmp
             touch tmp/restart.txt
-            echo "MARKER-11: restart touched, script complete"
+            echo "MARKER-6: restart touched, script complete"
